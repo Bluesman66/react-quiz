@@ -4,13 +4,22 @@ import { ActiveQuiz } from '../../components';
 import s from './Quiz.module.scss';
 
 const Quiz = () => {
-	const [quiz, setQuiz] = useState([]);
+	const [quiz, setQuiz] = useState([
+		{
+			answers: [
+				{ text: 'Question 1' },
+				{ text: 'Question 2' },
+				{ text: 'Question 3' },
+				{ text: 'Question 4' },
+			],
+		},
+	]);
 
 	return (
 		<div className={s.Quiz}>
 			<div className={s.QuizWrapper}>
-				<h1>Quiz</h1>
-				<ActiveQuiz />
+				<h1>Please answer the questions</h1>
+				<ActiveQuiz answers={quiz[0].answers} />
 			</div>
 		</div>
 	);
