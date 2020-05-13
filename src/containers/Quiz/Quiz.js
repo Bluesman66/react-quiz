@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { ActiveQuiz } from '../../components';
 import s from './Quiz.module.scss';
 
 const Quiz = () => {
@@ -7,7 +8,10 @@ const Quiz = () => {
 
 	return (
 		<div className={s.Quiz}>
-			<h1>Quiz</h1>
+			<div className={s.QuizWrapper}>
+				<h1>Quiz</h1>
+				<ActiveQuiz />
+			</div>
 		</div>
 	);
 };
