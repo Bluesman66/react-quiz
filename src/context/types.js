@@ -1,0 +1,1 @@
+export const GET_ANSWER_ID = 'GET_ANSWER_ID';

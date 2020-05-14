@@ -1,20 +1,20 @@
+import React, { useContext } from 'react';
+
 import AnswersList from './AnswersList/AnswersList';
-import React from 'react';
+import { QuizContext } from '../../context';
 import s from './ActiveQuiz.module.scss';
 
-const ActiveQuiz = (props) => {
+const ActiveQuiz = () => {
+	const { question } = useContext(QuizContext);
 	return (
 		<div className={s.ActiveQuiz}>
 			<p className={s.Qestion}>
 				<span>
-					<strong>1.</strong>&nbsp; {props.question}
+					<strong>1.</strong>&nbsp; {question}
 				</span>
 				<small>4 of 12</small>
 			</p>
-			<AnswersList
-				answers={props.answers}
-				onAnswerClick={props.onAnswerClick}
-			/>
+			<AnswersList />
 		</div>
 	);
 };

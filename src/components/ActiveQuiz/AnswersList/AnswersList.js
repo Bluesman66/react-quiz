@@ -1,18 +1,15 @@
+import React, { useContext } from 'react';
+
 import AnswerItem from './AnswerItem/AnswerItem';
-import React from 'react';
+import { QuizContext } from '../../../context';
 import s from './AnswersList.module.scss';
 
-const AnswersList = (props) => {
+const AnswersList = () => {
+	const { answers } = useContext(QuizContext);
 	return (
 		<ul className={s.AnswersList}>
-			{props.answers.map((answer, index) => {
-				return (
-					<AnswerItem
-						key={index}
-						answer={answer}
-						onAnswerClick={props.onAnswerClick}
-					/>
-				);
+			{answers.map((answer, index) => {
+				return <AnswerItem key={index} answer={answer} />;
 			})}
 		</ul>
 	);
