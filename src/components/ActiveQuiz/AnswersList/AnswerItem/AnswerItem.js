@@ -4,12 +4,13 @@ import { QuizContext } from '../../../../context';
 import s from './AnswerItem.module.scss';
 
 const AnswerItem = (props) => {
-	const { getAnswerId } = useContext(QuizContext);
+	const { onAnswerClick } = useContext(QuizContext);
+	const cls = [s.AnswerItem];
+	if (props.state) {
+		cls.push(s[props.state]);
+	}
 	return (
-		<li
-			className={s.AnswerItem}
-			onClick={() => getAnswerId(props.answer.id)}
-		>
+		<li className={cls.join(' ')} onClick={() => onAnswerClick(props.answer.id)}>
 			{props.answer.text}
 		</li>
 	);

@@ -1,9 +1,14 @@
-import { GET_ANSWER_ID } from '../types';
+import { SET_ANSWER_STATE, SET_NEXT_QUESTION } from '../types';
 
 const handlers = {
-	[GET_ANSWER_ID]: (state, { payload }) => ({
+	[SET_NEXT_QUESTION]: (state) => ({
 		...state,
 		activeQuestion: state.activeQuestion + 1,
+		answerState: null,
+	}),
+	[SET_ANSWER_STATE]: (state, { payload }) => ({
+		...state,
+		answerState: payload,
 	}),
 	DEFAULT: (state) => state,
 };

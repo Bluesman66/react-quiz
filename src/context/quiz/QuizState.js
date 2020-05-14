@@ -1,12 +1,13 @@
 import React, { useReducer } from 'react';
+import { SET_ANSWER_STATE, SET_NEXT_QUESTION } from '../types';
 
-import { GET_ANSWER_ID } from '../types';
 import QuizContext from './QuizContext';
 import quizReducer from './quizReducer';
 
 const QuizState = ({ children }) => {
 	const initialState = {
 		activeQuestion: 0,
+		answerState: null,
 		quiz: [
 			{
 				id: 1,
@@ -35,8 +36,26 @@ const QuizState = ({ children }) => {
 
 	const [state, dispatch] = useReducer(quizReducer, initialState);
 
-	const getAnswerId = (answerId) =>
-		dispatch({ type: GET_ANSWER_ID, payload: answerId });
+	const onAnswerClick = (answerId) => {
+		const question = state.quiz[state.activeQuestion];
+		if (question.correctAnswerId === answerId) {
+			dispatch({ type: SET_ANSWER_STATE, payload: { [answerId]: 'success' } });
+			const timeout = window.setTimeout(() => {
+				if (isQuizFinished()) {
+					console.log('Finished');
+				} else {
+					dispatch({ type: SET_NEXT_QUESTION });
+				}
+				window.clearTimeout(timeout);
+			}, 1000);
+		} else {
+			dispatch({ type: SET_ANSWER_STATE, payload: { [answerId]: 'error' } });
+		}
+	};
+
+	const isQuizFinished = () => {
+		return state.activeQuestion + 1 === state.quiz.length;
+	};
 
 	return (
 		<QuizContext.Provider
@@ -45,7 +64,8 @@ const QuizState = ({ children }) => {
 				answers: state.quiz[state.activeQuestion].answers,
 				answerNumber: state.activeQuestion + 1,
 				quizLength: state.quiz.length,
-				getAnswerId,
+				answerState: state.answerState,
+				onAnswerClick,
 			}}
 		>
 			{children}

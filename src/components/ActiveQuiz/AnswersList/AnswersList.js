@@ -5,11 +5,17 @@ import { QuizContext } from '../../../context';
 import s from './AnswersList.module.scss';
 
 const AnswersList = () => {
-	const { answers } = useContext(QuizContext);
+	const { answers, answerState } = useContext(QuizContext);
 	return (
 		<ul className={s.AnswersList}>
 			{answers.map((answer, index) => {
-				return <AnswerItem key={index} answer={answer} />;
+				return (
+					<AnswerItem
+						key={index}
+						answer={answer}
+						state={answerState ? answerState[answer.id] : null}
+					/>
+				);
 			})}
 		</ul>
 	);

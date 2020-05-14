@@ -1,1 +1,2 @@
-export const GET_ANSWER_ID = 'GET_ANSWER_ID';
+export const SET_NEXT_QUESTION = 'SET_NEXT_QUESTION';
+export const SET_ANSWER_STATE = 'SET_ANSWER_STATE';
