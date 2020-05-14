@@ -1,10 +1,10 @@
 import { GET_ANSWER_ID } from '../types';
 
 const handlers = {
-	[GET_ANSWER_ID]: (state, { payload }) => {
-		console.log(payload);
-		return state;
-	},
+	[GET_ANSWER_ID]: (state, { payload }) => ({
+		...state,
+		activeQuestion: state.activeQuestion + 1,
+	}),
 	DEFAULT: (state) => state,
 };
 
