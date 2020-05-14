@@ -37,9 +37,16 @@ const QuizState = ({ children }) => {
 	const [state, dispatch] = useReducer(quizReducer, initialState);
 
 	const onAnswerClick = (answerId) => {
+		if (state.answerState) {
+			const key = Object.keys(state.answerState)[0];
+			if (state.answerState[key] === 'success') return;
+		}
+
 		const question = state.quiz[state.activeQuestion];
+
 		if (question.correctAnswerId === answerId) {
 			dispatch({ type: SET_ANSWER_STATE, payload: { [answerId]: 'success' } });
+
 			const timeout = window.setTimeout(() => {
 				if (isQuizFinished()) {
 					console.log('Finished');
