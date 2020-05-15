@@ -1,11 +1,11 @@
 import { CLASS_ERROR, CLASS_SUCCESS } from '../../consts';
 import React, { useReducer } from 'react';
 import {
-	SET_ANSWER_STATE,
-	SET_IS_FINISHED,
-	SET_NEXT_QUESTION,
-	RESET_STATE,
-} from '../types';
+	goNextQuestion,
+	resetState,
+	setAnswerState,
+	setIsFinished,
+} from '../actions';
 
 import QuizContext from './QuizContext';
 import quizReducer from './quizReducer';
@@ -58,25 +58,19 @@ const QuizState = ({ children }) => {
 				results[question.id] = CLASS_SUCCESS;
 			}
 
-			dispatch({
-				type: SET_ANSWER_STATE,
-				payload: { answerState: { [answerId]: CLASS_SUCCESS }, results },
-			});
+			dispatch(setAnswerState(answerId, CLASS_SUCCESS, results));
 
 			const timeout = window.setTimeout(() => {
 				if (isQuizFinished()) {
-					dispatch({ type: SET_IS_FINISHED, payload: true });
+					dispatch(setIsFinished(true));
 				} else {
-					dispatch({ type: SET_NEXT_QUESTION });
+					dispatch(goNextQuestion());
 				}
 				window.clearTimeout(timeout);
 			}, 1000);
 		} else {
 			results[question.id] = CLASS_ERROR;
-			dispatch({
-				type: SET_ANSWER_STATE,
-				payload: { answerState: { [answerId]: CLASS_ERROR }, results },
-			});
+			dispatch(setAnswerState(answerId, CLASS_ERROR, results));
 		}
 	};
 
@@ -85,7 +79,7 @@ const QuizState = ({ children }) => {
 	};
 
 	const onRetry = () => {
-		dispatch({ type: RESET_STATE });
+		dispatch(resetState());
 	};
 
 	return (
