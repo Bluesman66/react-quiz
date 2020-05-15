@@ -1,3 +1,4 @@
 import ActiveQuiz from './ActiveQuiz/ActiveQuiz';
+import FinishedQuiz from './FinishedQuiz/FinishedQuiz';
 
-export { ActiveQuiz };
+export { ActiveQuiz, FinishedQuiz };

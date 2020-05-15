@@ -5,12 +5,17 @@ import s from './AnswerItem.module.scss';
 
 const AnswerItem = (props) => {
 	const { onAnswerClick } = useContext(QuizContext);
+
 	const cls = [s.AnswerItem];
 	if (props.state) {
 		cls.push(s[props.state]);
 	}
+
 	return (
-		<li className={cls.join(' ')} onClick={() => onAnswerClick(props.answer.id)}>
+		<li
+			className={cls.join(' ')}
+			onClick={() => onAnswerClick(props.answer.id)}
+		>
 			{props.answer.text}
 		</li>
 	);

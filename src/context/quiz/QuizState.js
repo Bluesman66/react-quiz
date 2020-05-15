@@ -1,11 +1,12 @@
 import React, { useReducer } from 'react';
-import { SET_ANSWER_STATE, SET_NEXT_QUESTION } from '../types';
+import { SET_ANSWER_STATE, SET_IS_FINISHED, SET_NEXT_QUESTION } from '../types';
 
 import QuizContext from './QuizContext';
 import quizReducer from './quizReducer';
 
 const QuizState = ({ children }) => {
 	const initialState = {
+		isFinished: true,
 		activeQuestion: 0,
 		answerState: null,
 		quiz: [
@@ -49,7 +50,7 @@ const QuizState = ({ children }) => {
 
 			const timeout = window.setTimeout(() => {
 				if (isQuizFinished()) {
-					console.log('Finished');
+					dispatch({ type: SET_IS_FINISHED, payload: true });
 				} else {
 					dispatch({ type: SET_NEXT_QUESTION });
 				}
@@ -72,6 +73,7 @@ const QuizState = ({ children }) => {
 				answerNumber: state.activeQuestion + 1,
 				quizLength: state.quiz.length,
 				answerState: state.answerState,
+				isFinished: state.isFinished,
 				onAnswerClick,
 			}}
 		>

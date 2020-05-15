@@ -1,4 +1,4 @@
-import { SET_ANSWER_STATE, SET_NEXT_QUESTION } from '../types';
+import { SET_ANSWER_STATE, SET_IS_FINISHED, SET_NEXT_QUESTION } from '../types';
 
 const handlers = {
 	[SET_NEXT_QUESTION]: (state) => ({
@@ -9,6 +9,10 @@ const handlers = {
 	[SET_ANSWER_STATE]: (state, { payload }) => ({
 		...state,
 		answerState: payload,
+	}),
+	[SET_IS_FINISHED]: (state, { payload }) => ({
+		...state,
+		isFinished: payload,
 	}),
 	DEFAULT: (state) => state,
 };
