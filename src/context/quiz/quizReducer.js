@@ -1,4 +1,9 @@
-import { SET_ANSWER_STATE, SET_IS_FINISHED, SET_NEXT_QUESTION } from '../types';
+import {
+	RESET_STATE,
+	SET_ANSWER_STATE,
+	SET_IS_FINISHED,
+	SET_NEXT_QUESTION,
+} from '../types';
 
 const handlers = {
 	[SET_NEXT_QUESTION]: (state) => ({
@@ -8,11 +13,19 @@ const handlers = {
 	}),
 	[SET_ANSWER_STATE]: (state, { payload }) => ({
 		...state,
-		answerState: payload,
+		answerState: payload.answerState,
+		results: payload.results,
 	}),
 	[SET_IS_FINISHED]: (state, { payload }) => ({
 		...state,
 		isFinished: payload,
+	}),
+	[RESET_STATE]: (state) => ({
+		...state,
+		activeQuestion: 0,
+		answerState: null,
+		isFinished: false,
+		results: {},
 	}),
 	DEFAULT: (state) => state,
 };

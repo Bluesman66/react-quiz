@@ -1,12 +1,19 @@
+import { CLASS_ERROR, CLASS_SUCCESS } from '../../consts';
 import React, { useReducer } from 'react';
-import { SET_ANSWER_STATE, SET_IS_FINISHED, SET_NEXT_QUESTION } from '../types';
+import {
+	SET_ANSWER_STATE,
+	SET_IS_FINISHED,
+	SET_NEXT_QUESTION,
+	RESET_STATE,
+} from '../types';
 
 import QuizContext from './QuizContext';
 import quizReducer from './quizReducer';
 
 const QuizState = ({ children }) => {
 	const initialState = {
-		isFinished: true,
+		results: {},
+		isFinished: false,
 		activeQuestion: 0,
 		answerState: null,
 		quiz: [
@@ -40,13 +47,21 @@ const QuizState = ({ children }) => {
 	const onAnswerClick = (answerId) => {
 		if (state.answerState) {
 			const key = Object.keys(state.answerState)[0];
-			if (state.answerState[key] === 'success') return;
+			if (state.answerState[key] === CLASS_SUCCESS) return;
 		}
 
 		const question = state.quiz[state.activeQuestion];
+		const results = state.results;
 
 		if (question.correctAnswerId === answerId) {
-			dispatch({ type: SET_ANSWER_STATE, payload: { [answerId]: 'success' } });
+			if (!results[question.id]) {
+				results[question.id] = CLASS_SUCCESS;
+			}
+
+			dispatch({
+				type: SET_ANSWER_STATE,
+				payload: { answerState: { [answerId]: CLASS_SUCCESS }, results },
+			});
 
 			const timeout = window.setTimeout(() => {
 				if (isQuizFinished()) {
@@ -57,12 +72,20 @@ const QuizState = ({ children }) => {
 				window.clearTimeout(timeout);
 			}, 1000);
 		} else {
-			dispatch({ type: SET_ANSWER_STATE, payload: { [answerId]: 'error' } });
+			results[question.id] = CLASS_ERROR;
+			dispatch({
+				type: SET_ANSWER_STATE,
+				payload: { answerState: { [answerId]: CLASS_ERROR }, results },
+			});
 		}
 	};
 
 	const isQuizFinished = () => {
 		return state.activeQuestion + 1 === state.quiz.length;
+	};
+
+	const onRetry = () => {
+		dispatch({ type: RESET_STATE });
 	};
 
 	return (
@@ -73,8 +96,11 @@ const QuizState = ({ children }) => {
 				answerNumber: state.activeQuestion + 1,
 				quizLength: state.quiz.length,
 				answerState: state.answerState,
+				results: state.results,
+				quiz: state.quiz,
 				isFinished: state.isFinished,
 				onAnswerClick,
+				onRetry,
 			}}
 		>
 			{children}
