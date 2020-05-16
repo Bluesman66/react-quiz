@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
 
 	return (
 		<div className={s.Layout}>
-			<Drawer isOpen={menu} />
+			<Drawer isOpen={menu} onClose={toggleMenuHandler}/>
 			<MenuToggle onToggle={toggleMenuHandler} isOpen={menu} />
 			<main>{children}</main>
 		</div>

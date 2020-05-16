@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+
+import Backdrop from '../../UI/Backdrop/Backdrop';
 import s from './Drawer.module.scss';
 
 const links = [1, 2, 3];
@@ -21,9 +23,12 @@ const Drawer = (props) => {
 	}
 
 	return (
-		<nav className={cls.join(' ')}>
-			<ul>{renderLinks()}</ul>
-		</nav>
+		<Fragment>
+			<nav className={cls.join(' ')}>
+				<ul>{renderLinks()}</ul>
+			</nav>
+			{props.isOpen ? <Backdrop onClick={props.onClose} /> : null}
+		</Fragment>
 	);
 };
 
