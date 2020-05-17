@@ -1,11 +1,16 @@
 import { ActiveQuiz, FinishedQuiz } from '../../components';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { QuizContext } from '../../context';
 import s from './Quiz.module.scss';
 
-const Quiz = () => {
+const Quiz = (props) => {
 	const { isFinished } = useContext(QuizContext);
+
+	useEffect(() => {
+		console.log(props.match.params.id);
+	});
+
 	return (
 		<div className={s.Quiz}>
 			<div className={s.QuizWrapper}>
