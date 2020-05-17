@@ -2,6 +2,7 @@ import { CLASS_ERROR, CLASS_SUCCESS } from '../../consts';
 import React, { useContext } from 'react';
 
 import Button from '../UI/Button/Button';
+import { Link } from 'react-router-dom';
 import { QuizContext } from '../../context';
 import s from './FinishedQuiz.module.scss';
 
@@ -37,8 +38,12 @@ const FinishedQuiz = () => {
 				Correctly {successCount} of {quizLength}
 			</p>
 			<div>
-				<Button onClick={onRetry} type="primary">Retry</Button>
-				<Button type="success">Go to test list</Button>
+				<Button onClick={onRetry} type="primary">
+					Retry
+				</Button>
+				<Link to="/">
+					<Button type="success">Go to test list</Button>
+				</Link>
 			</div>
 		</div>
 	);
