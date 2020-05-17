@@ -1,3 +1,8 @@
+$bkg: #fff;
+
+$a-color: #363d54;
+$a-bkg: #fff;
+
 .Drawer {
 	position: fixed;
 	left: 0;
@@ -7,7 +12,7 @@
 	max-width: 300px;
 	padding: 20px 10px;
 	box-sizing: border-box;
-	background: #fff;
+	background: $bkg;
 	z-index: 200;
 	transform: translateX(0px);
 	transition: transform 0.22s ease-in;
@@ -25,10 +30,10 @@
 			margin-bottom: 15px;
 
 			& a {
-				color: #363d54;
+				color: $a-color;
 				font-size: 30px;
 				text-decoration: none;
-				background-color: #fff;
+				background-color: $a-bkg;
 				position: relative;
 				padding: 0 20px 10px 20px;
 				transition: opacity 0.3s;

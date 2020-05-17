@@ -1,5 +1,5 @@
-$warn: #f01f30;
-$input-border: #bebebe;
+$warning: #f01f30;
+$border: #bebebe;
 
 .Input {
 	margin-bottom: 15px;
@@ -14,7 +14,7 @@ $input-border: #bebebe;
 	& input {
 		display: block;
 		box-sizing: border-box;
-		border: 1px solid $input-border;
+		border: 1px solid $border;
 		border-radius: 3px;
 		padding: 7px;
 		margin: 0 0 5px;
@@ -24,12 +24,12 @@ $input-border: #bebebe;
 	}
 
 	& span {
-		color: $warn;
+		color: $warning;
 		font-size: 12px;
 		font-weight: bold;
 	}
 
 	&.invalid label {
-		color: $warn;
+		color: $warning;
 	}
 }
