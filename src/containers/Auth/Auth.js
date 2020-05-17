@@ -1,4 +1,5 @@
 import { Button } from '../../components';
+import { Input } from '../../components';
 import React from 'react';
 import s from './Auth.module.scss';
 
@@ -16,8 +17,8 @@ const Auth = () => {
 			<div>
 				<h1>Authorization</h1>
 				<form onSubmit={submit} className={s.AuthForm}>
-					<input type="text" />
-					<input type="text" />
+					<Input label="Email"/>
+					<Input label="Password" error="TEST"/>
 					<Button type="success" onClick={login}>
 						Log In
 					</Button>
