@@ -4,7 +4,7 @@ import { QuizContext } from '../../../../context';
 import s from './AnswerItem.module.scss';
 
 const AnswerItem = (props) => {
-	const { answerClick: answerClick } = useContext(QuizContext);
+	const { answerClick } = useContext(QuizContext);
 
 	const cls = [s.AnswerItem];
 	if (props.state) {

@@ -19,7 +19,6 @@ const Input = (props) => {
 			<label htmlFor={htmlFor}>{props.label}</label>
 			<input
 				type={inputType}
-				name
 				id={htmlFor}
 				value={props.value}
 				onChange={props.onChange}
