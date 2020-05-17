@@ -7,7 +7,7 @@ import { QuizContext } from '../../context';
 import s from './FinishedQuiz.module.scss';
 
 const FinishedQuiz = () => {
-	const { results, quiz, quizLength, onRetry } = useContext(QuizContext);
+	const { results, quiz, quizLength, retry } = useContext(QuizContext);
 
 	const successCount = Object.keys(results).reduce((total, key) => {
 		if (results[key] === CLASS_SUCCESS) {
@@ -38,7 +38,7 @@ const FinishedQuiz = () => {
 				Correctly {successCount} of {quizLength}
 			</p>
 			<div>
-				<Button onClick={onRetry} type="primary">
+				<Button onClick={retry} type="primary">
 					Retry
 				</Button>
 				<Link to="/">

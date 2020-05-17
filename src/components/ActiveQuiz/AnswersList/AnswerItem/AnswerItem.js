@@ -4,7 +4,7 @@ import { QuizContext } from '../../../../context';
 import s from './AnswerItem.module.scss';
 
 const AnswerItem = (props) => {
-	const { onAnswerClick } = useContext(QuizContext);
+	const { answerClick: answerClick } = useContext(QuizContext);
 
 	const cls = [s.AnswerItem];
 	if (props.state) {
@@ -14,7 +14,7 @@ const AnswerItem = (props) => {
 	return (
 		<li
 			className={cls.join(' ')}
-			onClick={() => onAnswerClick(props.answer.id)}
+			onClick={() => answerClick(props.answer.id)}
 		>
 			{props.answer.text}
 		</li>

@@ -44,7 +44,7 @@ const QuizState = ({ children }) => {
 
 	const [state, dispatch] = useReducer(quizReducer, initialState);
 
-	const onAnswerClick = (answerId) => {
+	const answerClick = (answerId) => {
 		if (state.answerState) {
 			const key = Object.keys(state.answerState)[0];
 			if (state.answerState[key] === CLASS_SUCCESS) return;
@@ -78,7 +78,7 @@ const QuizState = ({ children }) => {
 		return state.activeQuestion + 1 === state.quiz.length;
 	};
 
-	const onRetry = () => {
+	const retry = () => {
 		dispatch(resetState());
 	};
 
@@ -93,8 +93,8 @@ const QuizState = ({ children }) => {
 				results: state.results,
 				quiz: state.quiz,
 				isFinished: state.isFinished,
-				onAnswerClick,
-				onRetry,
+				answerClick,
+				retry,
 			}}
 		>
 			{children}
