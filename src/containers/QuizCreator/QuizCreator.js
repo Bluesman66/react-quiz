@@ -1,8 +1,8 @@
 import { Button, Input, Select } from '../../components';
 import React, { useState } from 'react';
+import { createControl, validate, validateForm } from '../../form';
 
 import { Auxiliary } from '../../hoc';
-import createControl from '../../form';
 import s from './QuizCreator.module.scss';
 
 const createOptionControl = (number) => {
@@ -34,6 +34,7 @@ const createFormControls = () => {
 
 const QuizCreator = () => {
 	const [quiz, setQuiz] = useState([]);
+	const [formValid, setFormValid] = useState(false);
 	const [correctAnswerId, setCorrectAnswerId] = useState(1);
 	const [formControls, setFormControls] = useState(createFormControls());
 
@@ -41,11 +42,29 @@ const QuizCreator = () => {
 		event.preventDefault();
 	};
 
-	const addQuestion = () => {};
+	const addQuestion = (event) => {
+		event.preventDefault();
+		
+	};
 
-	const createQuiz = () => {};
+	const createQuiz = () => {
+		console.log(quiz);
+		// TODO: Server
+	};
 
-	const change = (value, controlName) => {};
+	const change = (value, controlName) => {
+		const formControlsClone = { ...formControls };
+		const control = { ...formControlsClone[controlName] };
+
+		control.touched = true;
+		control.value = value;
+		control.valid = validate(control.value, control.validation);
+
+		formControlsClone[controlName] = control;
+
+		setFormControls(formControlsClone);
+		setFormValid(validateForm(formControlsClone));
+	};
 
 	const renderControls = () => {
 		return Object.keys(formControls).map((controlName, index) => {
@@ -93,10 +112,14 @@ const QuizCreator = () => {
 				<form onSubmit={submit}>
 					{renderControls()}
 					{select}
-					<Button type="primary" onClick={addQuestion}>
+					<Button type="primary" onClick={addQuestion} disabled={!formValid}>
 						Add question
 					</Button>
-					<Button type="success" onClick={createQuiz}>
+					<Button
+						type="success"
+						onClick={createQuiz}
+						disabled={quiz.length === 0}
+					>
 						Create quiz
 					</Button>
 				</form>
