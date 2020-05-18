@@ -44,7 +44,30 @@ const QuizCreator = () => {
 
 	const addQuestion = (event) => {
 		event.preventDefault();
-		
+
+		const quizClone = quiz.concat();
+		const index = quizClone.length + 1;
+
+		const { question, option1, option2, option3, option4 } = formControls;
+
+		const questionItem = {
+			question: question.value,
+			id: index,
+			correctAnswerId,
+			answers: [
+				{ text: option1.value, id: option1.id },
+				{ text: option2.value, id: option2.id },
+				{ text: option3.value, id: option3.id },
+				{ text: option4.value, id: option4.id },
+			],
+		};
+
+		quizClone.push(questionItem);
+
+		setQuiz(quizClone);
+		setFormValid(false);
+		setCorrectAnswerId(1);
+		setFormControls(createFormControls());
 	};
 
 	const createQuiz = () => {
