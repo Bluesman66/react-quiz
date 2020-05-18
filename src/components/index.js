@@ -4,5 +4,6 @@ import Drawer from './Navigation/Drawer/Drawer';
 import FinishedQuiz from './FinishedQuiz/FinishedQuiz';
 import Input from './UI/Input/Input';
 import MenuToggle from './Navigation/MenuToggle/MenuToggle';
+import Select from './UI/Select/Select';
 
-export { ActiveQuiz, FinishedQuiz, Button, MenuToggle, Drawer, Input };
+export { ActiveQuiz, FinishedQuiz, Button, MenuToggle, Drawer, Input, Select };

@@ -1,4 +1,4 @@
-import { Button, Input } from '../../components';
+import { Button, Input, Select } from '../../components';
 import React, { useState } from 'react';
 
 import { Auxiliary } from '../../hoc';
@@ -34,6 +34,7 @@ const createFormControls = () => {
 
 const QuizCreator = () => {
 	const [quiz, setQuiz] = useState([]);
+	const [correctAnswerId, setCorrectAnswerId] = useState(1);
 	const [formControls, setFormControls] = useState(createFormControls());
 
 	const submit = (event) => {
@@ -67,13 +68,31 @@ const QuizCreator = () => {
 		});
 	};
 
+	const selectChange = (event) => {
+		setCorrectAnswerId(+event.target.value);
+	};
+
+	const select = (
+		<Select
+			label="Please select correct answer"
+			value={correctAnswerId}
+			onChange={selectChange}
+			options={[
+				{ text: 1, value: 1 },
+				{ text: 2, value: 2 },
+				{ text: 3, value: 3 },
+				{ text: 4, value: 4 },
+			]}
+		/>
+	);
+
 	return (
 		<div className={s.QuizCreator}>
 			<div>
 				<h1>Quiz Creator</h1>
 				<form onSubmit={submit}>
 					{renderControls()}
-					<select name="" id=""></select>
+					{select}
 					<Button type="primary" onClick={addQuestion}>
 						Add question
 					</Button>
