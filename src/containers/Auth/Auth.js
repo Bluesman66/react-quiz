@@ -6,6 +6,7 @@ import is from 'is_js';
 import s from './Auth.module.scss';
 
 const Auth = () => {
+	const [formValid, setFormValid] = useState(false);
 	const [formControls, setFormControls] = useState({
 		email: {
 			value: '',
@@ -53,6 +54,17 @@ const Auth = () => {
 		return isValid;
 	};
 
+	const validateForm = (formControls) => {
+		let isFormValid = true;
+
+		// eslint-disable-next-line array-callback-return
+		Object.keys(formControls).map((controlName) => {
+			isFormValid = formControls[controlName].valid && isFormValid;
+		});
+
+		return isFormValid;
+	};
+
 	const change = (event, controlName) => {
 		const formControlsClone = { ...formControls };
 		const control = { ...formControlsClone[controlName] };
@@ -64,6 +76,7 @@ const Auth = () => {
 		formControlsClone[controlName] = control;
 
 		setFormControls(formControlsClone);
+		setFormValid(validateForm(formControlsClone));
 	};
 
 	const login = () => {};
@@ -99,10 +112,10 @@ const Auth = () => {
 				<h1>Authorization</h1>
 				<form onSubmit={submit} className={s.AuthForm}>
 					{renderInputs()}
-					<Button type="success" onClick={login}>
+					<Button type="success" onClick={login} disabled={!formValid}>
 						Log In
 					</Button>
-					<Button type="primary" onClick={register}>
+					<Button type="primary" onClick={register} disabled={!formValid}>
 						Register
 					</Button>
 				</form>
