@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Button } from '../../components';
 import { Input } from '../../components';
+import is from 'is_js';
 import s from './Auth.module.scss';
 
 const Auth = () => {
@@ -32,8 +33,37 @@ const Auth = () => {
 		},
 	});
 
+	const validateControl = (value, validation) => {
+		if (!validation) return true;
+
+		let isValid = true;
+
+		if (validation.required) {
+			isValid = value.trim().length > 0 && isValid;
+		}
+
+		if (validation.email) {
+			isValid = is.email(value) && isValid;
+		}
+
+		if (validation.minLength) {
+			isValid = value.trim().length >= validation.minLength && isValid;
+		}
+
+		return isValid;
+	};
+
 	const change = (event, controlName) => {
-		console.log(`${controlName}: ${event.target.value}`);
+		const formControlsClone = { ...formControls };
+		const control = { ...formControlsClone[controlName] };
+
+		control.value = event.target.value;
+		control.touched = true;
+		control.valid = validateControl(control.value, control.validation);
+
+		formControlsClone[controlName] = control;
+
+		setFormControls(formControlsClone);
 	};
 
 	const login = () => {};
