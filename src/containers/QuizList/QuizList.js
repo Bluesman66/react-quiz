@@ -1,5 +1,7 @@
+import React, { useEffect } from 'react';
+
 import { NavLink } from 'react-router-dom';
-import React from 'react';
+import axios from 'axios';
 import s from './QuizList.module.scss';
 
 const QuizList = () => {
@@ -12,6 +14,12 @@ const QuizList = () => {
 			);
 		});
 	};
+
+	useEffect(() => {
+		axios.get('https://react-quiz-82f4c.firebaseio.com/quiz.json').then((res) => {
+			console.log(res);
+		});
+	});
 
 	return (
 		<div className={s.QuizList}>
