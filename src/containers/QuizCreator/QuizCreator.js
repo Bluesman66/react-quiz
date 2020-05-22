@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { createControl, validate, validateForm } from '../../form';
 
 import { Auxiliary } from '../../hoc';
+import axios from 'axios';
 import s from './QuizCreator.module.scss';
 
 const createOptionControl = (number) => {
@@ -70,9 +71,20 @@ const QuizCreator = () => {
 		setFormControls(createFormControls());
 	};
 
-	const createQuiz = () => {
-		console.log(quiz);
-		// TODO: Server
+	const createQuiz = async (event) => {
+		event.preventDefault();
+		try {
+			await axios.post(
+				'https://react-quiz-82f4c.firebaseio.com/quizes.json',
+				quiz
+			);
+			setQuiz([]);
+			setFormValid(false);
+			setCorrectAnswerId(1);
+			setFormControls(createFormControls());
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const change = (value, controlName) => {
