@@ -12,16 +12,6 @@ const QuizList = () => {
 	const CancelToken = axios.CancelToken;
 	const source = CancelToken.source();
 
-	const renderQuizes = () => {
-		return quizes.map((quiz) => {
-			return (
-				<li key={quiz.id}>
-					<NavLink to={`/quiz/${quiz.id}`}>{quiz.name}</NavLink>
-				</li>
-			);
-		});
-	};
-
 	useEffect(() => {
 		const getQuizList = async () => {
 			try {
@@ -51,6 +41,16 @@ const QuizList = () => {
 			source.cancel();
 		};
 	});
+
+	const renderQuizes = () => {
+		return quizes.map((quiz) => {
+			return (
+				<li key={quiz.id}>
+					<NavLink to={`/quiz/${quiz.id}`}>{quiz.name}</NavLink>
+				</li>
+			);
+		});
+	};
 
 	return (
 		<div className={s.QuizList}>
