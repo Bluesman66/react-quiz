@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
+import { Loader } from '../../components';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import s from './QuizList.module.scss';
 
 const QuizList = () => {
 	const [quizes, setQuizes] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	const CancelToken = axios.CancelToken;
 	const source = CancelToken.source();
@@ -36,6 +38,7 @@ const QuizList = () => {
 						name: `Test N${index + 1}`,
 					});
 				});
+				setLoading(false);
 				setQuizes(qzs);
 			} catch (error) {
 				console.log(error);
@@ -53,7 +56,7 @@ const QuizList = () => {
 		<div className={s.QuizList}>
 			<div>
 				<h1>QuizList</h1>
-				<ul>{renderQuizes()}</ul>
+				{loading ? <Loader /> : <ul>{renderQuizes()}</ul>}
 			</div>
 		</div>
 	);
