@@ -1,24 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import s from './QuizList.module.scss';
 
 const QuizList = () => {
+	const [quizes, setQuizes] = useState([]);
+
+	const CancelToken = axios.CancelToken;
+	const source = CancelToken.source();
+
 	const renderQuizes = () => {
-		return [1, 2, 3].map((quiz, index) => {
+		return quizes.map((quiz) => {
 			return (
-				<li key={index}>
-					<NavLink to={`/quiz/${quiz}`}>Quiz {quiz}</NavLink>
+				<li key={quiz.id}>
+					<NavLink to={`/quiz/${quiz.id}`}>{quiz.name}</NavLink>
 				</li>
 			);
 		});
 	};
 
 	useEffect(() => {
-		axios.get('https://react-quiz-82f4c.firebaseio.com/quiz.json').then((res) => {
-			console.log(res);
-		});
+		const getQuizList = async () => {
+			try {
+				const response = await axios.get(
+					'https://react-quiz-82f4c.firebaseio.com/quizes.json',
+					{
+						cancelToken: source.token,
+					}
+				);
+				const qzs = [];
+				Object.keys(response.data).forEach((key, index) => {
+					qzs.push({
+						id: key,
+						name: `Test N${index + 1}`,
+					});
+				});
+				setQuizes(qzs);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		getQuizList();
+
+		return () => {
+			source.cancel();
+		};
 	});
 
 	return (

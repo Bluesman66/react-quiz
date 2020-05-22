@@ -57,8 +57,7 @@ const Auth = () => {
 	const validateForm = (formControls) => {
 		let isFormValid = true;
 
-		// eslint-disable-next-line array-callback-return
-		Object.keys(formControls).map((controlName) => {
+		Object.keys(formControls).forEach((controlName) => {
 			isFormValid = formControls[controlName].valid && isFormValid;
 		});
 
