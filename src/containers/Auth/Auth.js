@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Button } from '../../components';
 import { Input } from '../../components';
+import axios from 'axios';
 import is from 'is_js';
 import s from './Auth.module.scss';
 
@@ -78,9 +79,41 @@ const Auth = () => {
 		setFormValid(validateForm(formControlsClone));
 	};
 
-	const login = () => {};
+	const login = async () => {
+		const authData = {
+			email: formControls.email.value,
+			password: formControls.password.value,
+			returnSecureToken: true,
+		};
+		try {
+			const response = await axios.post(
+				`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=
+				AIzaSyDnmmD-gjpkSWDwRLfb8IUQ_ICWK7_kFnc`,
+				authData
+			);
+			console.log(response.data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-	const register = () => {};
+	const register = async () => {
+		const authData = {
+			email: formControls.email.value,
+			password: formControls.password.value,
+			returnSecureToken: true,
+		};
+		try {
+			const response = await axios.post(
+				`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=
+				AIzaSyDnmmD-gjpkSWDwRLfb8IUQ_ICWK7_kFnc`,
+				authData
+			);
+			console.log(response.data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const submit = (event) => {
 		event.preventDefault();
