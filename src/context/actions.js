@@ -3,6 +3,7 @@ import {
 	SET_ANSWER_STATE,
 	SET_IS_FINISHED,
 	SET_NEXT_QUESTION,
+	SET_QUIZ,
 } from './types';
 
 export function goNextQuestion() {
@@ -28,5 +29,12 @@ export function setAnswerState(answerId, state, results) {
 export function resetState(number) {
 	return {
 		type: RESET_STATE,
+	};
+}
+
+export function setQuiz(quiz) {
+	return {
+		type: SET_QUIZ,
+		payload: quiz
 	};
 }

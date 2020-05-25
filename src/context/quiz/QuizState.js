@@ -5,44 +5,20 @@ import {
 	resetState,
 	setAnswerState,
 	setIsFinished,
+	setQuiz,
 } from '../actions';
 
 import QuizContext from './QuizContext';
 import quizReducer from './quizReducer';
 
-const QuizState = ({ children }) => {
-	const initialState = {
+const QuizState = (props) => {
+	const [state, dispatch] = useReducer(quizReducer, {
 		results: {},
 		isFinished: false,
 		activeQuestion: 0,
 		answerState: null,
-		quiz: [
-			{
-				id: 1,
-				question: 'What color is sky?',
-				correctAnswerId: 2,
-				answers: [
-					{ text: 'Black', id: 1 },
-					{ text: 'Blue', id: 2 },
-					{ text: 'Red', id: 3 },
-					{ text: 'Green', id: 4 },
-				],
-			},
-			{
-				id: 2,
-				question: 'Which year St. Petersburg was founded?',
-				correctAnswerId: 3,
-				answers: [
-					{ text: '1683', id: 1 },
-					{ text: '1700', id: 2 },
-					{ text: '1703', id: 3 },
-					{ text: '1803', id: 4 },
-				],
-			},
-		],
-	};
-
-	const [state, dispatch] = useReducer(quizReducer, initialState);
+		quiz: [],
+	});
 
 	const answerClick = (answerId) => {
 		if (state.answerState) {
@@ -82,11 +58,17 @@ const QuizState = ({ children }) => {
 		dispatch(resetState());
 	};
 
+	const loadQuiz = (quiz) => {
+		dispatch(setQuiz(quiz));
+	};
+
+	const activeQuiz = state.quiz[state.activeQuestion];
+
 	return (
 		<QuizContext.Provider
 			value={{
-				question: state.quiz[state.activeQuestion].question,
-				answers: state.quiz[state.activeQuestion].answers,
+				question: activeQuiz ? activeQuiz.question : '',
+				answers: activeQuiz ? activeQuiz.answers : [],
 				answerNumber: state.activeQuestion + 1,
 				quizLength: state.quiz.length,
 				answerState: state.answerState,
@@ -95,9 +77,10 @@ const QuizState = ({ children }) => {
 				isFinished: state.isFinished,
 				answerClick,
 				retry,
+				loadQuiz,
 			}}
 		>
-			{children}
+			{props.children}
 		</QuizContext.Provider>
 	);
 };

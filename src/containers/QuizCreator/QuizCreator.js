@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { createControl, validate, validateForm } from '../../form';
 
 import { Auxiliary } from '../../hoc';
+import { BASE_URL } from '../../consts';
 import axios from 'axios';
 import s from './QuizCreator.module.scss';
 
@@ -74,10 +75,7 @@ const QuizCreator = () => {
 	const createQuiz = async (event) => {
 		event.preventDefault();
 		try {
-			await axios.post(
-				'https://react-quiz-82f4c.firebaseio.com/quizes.json',
-				quiz
-			);
+			await axios.post(`${BASE_URL}/quizes.json`, quiz);
 			setQuiz([]);
 			setFormValid(false);
 			setCorrectAnswerId(1);

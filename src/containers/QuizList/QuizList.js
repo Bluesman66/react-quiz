@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { BASE_URL } from '../../consts';
 import { Loader } from '../../components';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
@@ -15,12 +16,9 @@ const QuizList = () => {
 	useEffect(() => {
 		const getQuizList = async () => {
 			try {
-				const response = await axios.get(
-					'https://react-quiz-82f4c.firebaseio.com/quizes.json',
-					{
-						cancelToken: source.token,
-					}
-				);
+				const response = await axios.get(`${BASE_URL}/quizes.json`, {
+					cancelToken: source.token,
+				});
 				const qzs = [];
 				Object.keys(response.data).forEach((key, index) => {
 					qzs.push({

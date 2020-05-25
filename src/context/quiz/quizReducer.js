@@ -3,6 +3,7 @@ import {
 	SET_ANSWER_STATE,
 	SET_IS_FINISHED,
 	SET_NEXT_QUESTION,
+	SET_QUIZ
 } from '../types';
 
 const handlers = {
@@ -26,6 +27,10 @@ const handlers = {
 		answerState: null,
 		isFinished: false,
 		results: {},
+	}),
+	[SET_QUIZ]: (state, { payload }) => ({
+		...state,
+		quiz: payload,
 	}),
 	DEFAULT: (state) => state,
 };
