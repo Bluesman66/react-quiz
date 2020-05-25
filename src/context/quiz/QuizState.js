@@ -1,5 +1,4 @@
 import { CLASS_ERROR, CLASS_SUCCESS } from '../../consts';
-import React, { useReducer } from 'react';
 import {
 	goNextQuestion,
 	resetState,
@@ -9,16 +8,33 @@ import {
 } from '../actions';
 
 import QuizContext from './QuizContext';
+import React from 'react';
 import quizReducer from './quizReducer';
+import thunk from 'redux-thunk';
+import useEnhancedReducer from 'react-enhanced-reducer-hook';
+
+const logMiddleware = ({ getState }) => {
+	return (next) => (action) => {
+		console.log('Prev State:', getState());
+		console.log('Action:', action);
+		next(action);
+		console.log('Next State:', getState());
+	};
+};
 
 const QuizState = (props) => {
-	const [state, dispatch] = useReducer(quizReducer, {
+	const initialState = {
 		results: {},
 		isFinished: false,
 		activeQuestion: 0,
 		answerState: null,
 		quiz: [],
-	});
+	};
+
+	const [state, dispatch] = useEnhancedReducer(quizReducer, initialState, [
+		thunk,
+		logMiddleware,
+	]);
 
 	const answerClick = (answerId) => {
 		if (state.answerState) {

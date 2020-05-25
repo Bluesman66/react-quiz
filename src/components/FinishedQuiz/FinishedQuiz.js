@@ -42,7 +42,7 @@ const FinishedQuiz = () => {
 					Retry
 				</Button>
 				<Link to="/">
-					<Button type="success">Go to test list</Button>
+					<Button type="success">Go to quiz list</Button>
 				</Link>
 			</div>
 		</div>
