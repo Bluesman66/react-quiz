@@ -3,8 +3,7 @@ import {
 	SET_ANSWER_STATE,
 	SET_IS_FINISHED,
 	SET_NEXT_QUESTION,
-	SET_QUIZ_LIST_PROPS,
-	SET_QUIZ_PROPS,
+	SET_QUIZES,
 } from './types';
 
 export function goNextQuestionAction() {
@@ -27,28 +26,15 @@ export function setAnswerStateAction(answerId, state, results) {
 	};
 }
 
-export function resetStateAction(number) {
+export function resetStateAction() {
 	return {
 		type: RESET_STATE,
 	};
 }
 
-export function setQuizPropsAction(loading, quizes) {
+export function setQuizesAction(quizes) {
 	return {
-		type: SET_QUIZ_PROPS,
-		payload: {
-			loading,
-			quizes,
-		}
-	};
-}
-
-export function setQuizListPropsAction(loading, quizes) {
-	return {
-		type: SET_QUIZ_LIST_PROPS,
-		payload: {
-			loading,
-			quizes,
-		},
+		type: SET_QUIZES,
+		payload: quizes,
 	};
 }

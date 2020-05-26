@@ -1,15 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { BASE_URL } from '../../consts';
 import { Loader } from '../../components';
 import { NavLink } from 'react-router-dom';
-import { QuizContext } from '../../context';
 import axios from 'axios';
 import s from './QuizList.module.scss';
 
 const QuizList = () => {
-	const { quizList } = useContext(QuizContext);
-	const { quizes, loading, setQuizListProps } = quizList;
+	const [quizes, setQuizes] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	const CancelToken = axios.CancelToken;
 	const source = CancelToken.source();
@@ -27,7 +26,8 @@ const QuizList = () => {
 						name: `Test N${index + 1}`,
 					});
 				});
-				setQuizListProps(false, quizes);
+				setQuizes(quizes);
+				setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}

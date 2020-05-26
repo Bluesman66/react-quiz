@@ -3,8 +3,7 @@ import {
 	SET_ANSWER_STATE,
 	SET_IS_FINISHED,
 	SET_NEXT_QUESTION,
-	SET_QUIZ_LIST_PROPS,
-	SET_QUIZ_PROPS,
+	SET_QUIZES,
 } from '../types';
 
 const handlers = {
@@ -32,20 +31,11 @@ const handlers = {
 		isFinished: false,
 		results: {},
 	}),
-	[SET_QUIZ_PROPS]: (state, { payload }) => ({
+	[SET_QUIZES]: (state, { payload }) => ({
 		...state,
 		quiz: {
 			...state.quiz,
-			loading: payload.loading,
-			quizes: payload.quizes,
-		},
-	}),
-	[SET_QUIZ_LIST_PROPS]: (state, { payload }) => ({
-		...state,
-		quizList: {
-			...state.quizList,
-			loading: payload.loading,
-			quizes: payload.quizes,
+			quizes: payload,
 		},
 	}),
 	DEFAULT: (state) => state,

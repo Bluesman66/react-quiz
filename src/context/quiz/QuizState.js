@@ -4,8 +4,7 @@ import {
 	resetStateAction,
 	setAnswerStateAction,
 	setIsFinishedAction,
-	setQuizListPropsAction,
-	setQuizPropsAction,
+	setQuizesAction,
 } from '../actions';
 
 import QuizContext from './QuizContext';
@@ -31,16 +30,9 @@ const QuizState = (props) => {
 		quiz: {
 			quizes: [],
 			results: {},
-			loading: true,
 			isFinished: false,
-			setQuizProps,
+			setQuizes,
 			retryQuiz,
-		},
-
-		quizList: {
-			quizes: [],
-			loading: true,
-			setQuizListProps,
 		},
 	};
 
@@ -87,12 +79,8 @@ const QuizState = (props) => {
 		dispatch(resetStateAction());
 	}
 
-	function setQuizProps(loading, quizes) {
-		dispatch(setQuizPropsAction(loading, quizes));
-	}
-
-	function setQuizListProps(loading, quizes) {
-		dispatch(setQuizListPropsAction(loading, quizes));
+	function setQuizes(quizes) {
+		dispatch(setQuizesAction(quizes));
 	}
 
 	const activeQuiz = state.quiz.quizes[state.activeQuestion];
