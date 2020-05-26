@@ -1,10 +1,11 @@
 import { CLASS_ERROR, CLASS_SUCCESS } from '../../consts';
 import {
-	goNextQuestion,
-	resetState,
-	setAnswerState,
-	setIsFinished,
-	setQuiz,
+	goNextQuestionAction,
+	resetStateAction,
+	setAnswerStateAction,
+	setIsFinishedAction,
+	setQuizListPropsAction,
+	setQuizPropsAction,
 } from '../actions';
 
 import QuizContext from './QuizContext';
@@ -24,11 +25,23 @@ const logMiddleware = ({ getState }) => {
 
 const QuizState = (props) => {
 	const initialState = {
-		results: {},
-		isFinished: false,
 		activeQuestion: 0,
 		answerState: null,
-		quiz: [],
+
+		quiz: {
+			quizes: [],
+			results: {},
+			loading: true,
+			isFinished: false,
+			setQuizProps,
+			retryQuiz,
+		},
+
+		quizList: {
+			quizes: [],
+			loading: true,
+			setQuizListProps,
+		},
 	};
 
 	const [state, dispatch] = useEnhancedReducer(quizReducer, initialState, [
@@ -42,43 +55,47 @@ const QuizState = (props) => {
 			if (state.answerState[key] === CLASS_SUCCESS) return;
 		}
 
-		const question = state.quiz[state.activeQuestion];
-		const results = state.results;
+		const question = state.quiz.quizes[state.activeQuestion];
+		const results = state.quiz.results;
 
 		if (question.correctAnswerId === answerId) {
 			if (!results[question.id]) {
 				results[question.id] = CLASS_SUCCESS;
 			}
 
-			dispatch(setAnswerState(answerId, CLASS_SUCCESS, results));
+			dispatch(setAnswerStateAction(answerId, CLASS_SUCCESS, results));
 
 			const timeout = window.setTimeout(() => {
 				if (isQuizFinished()) {
-					dispatch(setIsFinished(true));
+					dispatch(setIsFinishedAction(true));
 				} else {
-					dispatch(goNextQuestion());
+					dispatch(goNextQuestionAction());
 				}
 				window.clearTimeout(timeout);
 			}, 1000);
 		} else {
 			results[question.id] = CLASS_ERROR;
-			dispatch(setAnswerState(answerId, CLASS_ERROR, results));
+			dispatch(setAnswerStateAction(answerId, CLASS_ERROR, results));
 		}
 	};
 
 	const isQuizFinished = () => {
-		return state.activeQuestion + 1 === state.quiz.length;
+		return state.activeQuestion + 1 === state.quiz.quizes.length;
 	};
 
-	const retry = () => {
-		dispatch(resetState());
-	};
+	function retryQuiz() {
+		dispatch(resetStateAction());
+	}
 
-	const loadQuiz = (quiz) => {
-		dispatch(setQuiz(quiz));
-	};
+	function setQuizProps(loading, quizes) {
+		dispatch(setQuizPropsAction(loading, quizes));
+	}
 
-	const activeQuiz = state.quiz[state.activeQuestion];
+	function setQuizListProps(loading, quizes) {
+		dispatch(setQuizListPropsAction(loading, quizes));
+	}
+
+	const activeQuiz = state.quiz.quizes[state.activeQuestion];
 
 	return (
 		<QuizContext.Provider
@@ -86,14 +103,11 @@ const QuizState = (props) => {
 				question: activeQuiz ? activeQuiz.question : '',
 				answers: activeQuiz ? activeQuiz.answers : [],
 				answerNumber: state.activeQuestion + 1,
-				quizLength: state.quiz.length,
 				answerState: state.answerState,
-				results: state.results,
+				quizLength: state.quiz.quizes.length,
 				quiz: state.quiz,
-				isFinished: state.isFinished,
+				quizList: state.quizList,
 				answerClick,
-				retry,
-				loadQuiz,
 			}}
 		>
 			{props.children}

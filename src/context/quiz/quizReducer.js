@@ -3,7 +3,8 @@ import {
 	SET_ANSWER_STATE,
 	SET_IS_FINISHED,
 	SET_NEXT_QUESTION,
-	SET_QUIZ
+	SET_QUIZ_LIST_PROPS,
+	SET_QUIZ_PROPS,
 } from '../types';
 
 const handlers = {
@@ -19,7 +20,10 @@ const handlers = {
 	}),
 	[SET_IS_FINISHED]: (state, { payload }) => ({
 		...state,
-		isFinished: payload,
+		quiz: {
+			...state.quiz,
+			isFinished: payload,
+		},
 	}),
 	[RESET_STATE]: (state) => ({
 		...state,
@@ -28,9 +32,21 @@ const handlers = {
 		isFinished: false,
 		results: {},
 	}),
-	[SET_QUIZ]: (state, { payload }) => ({
+	[SET_QUIZ_PROPS]: (state, { payload }) => ({
 		...state,
-		quiz: payload,
+		quiz: {
+			...state.quiz,
+			loading: payload.loading,
+			quizes: payload.quizes,
+		},
+	}),
+	[SET_QUIZ_LIST_PROPS]: (state, { payload }) => ({
+		...state,
+		quizList: {
+			...state.quizList,
+			loading: payload.loading,
+			quizes: payload.quizes,
+		},
 	}),
 	DEFAULT: (state) => state,
 };

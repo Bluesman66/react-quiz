@@ -1,5 +1,5 @@
 import { ActiveQuiz, FinishedQuiz } from '../../components';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { BASE_URL } from '../../consts';
 import { Loader } from '../../components';
@@ -8,8 +8,8 @@ import axios from 'axios';
 import s from './Quiz.module.scss';
 
 const Quiz = (props) => {
-	const { isFinished, loadQuiz } = useContext(QuizContext);
-	const [loading, setLoading] = useState(true);
+	const { quiz } = useContext(QuizContext);
+	const { loading, isFinished, setQuizProps } = quiz;
 
 	const CancelToken = axios.CancelToken;
 	const source = CancelToken.source();
@@ -23,8 +23,7 @@ const Quiz = (props) => {
 						cancelToken: source.token,
 					}
 				);
-				setLoading(false);
-				loadQuiz(response.data);
+				setQuizProps(false, response.data);
 			} catch (error) {
 				console.log(error);
 			}
@@ -35,7 +34,7 @@ const Quiz = (props) => {
 		return () => {
 			source.cancel();
 		};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.match.params.id]);
 
 	return (

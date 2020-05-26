@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { BASE_URL } from '../../consts';
 import { Loader } from '../../components';
 import { NavLink } from 'react-router-dom';
+import { QuizContext } from '../../context';
 import axios from 'axios';
 import s from './QuizList.module.scss';
 
 const QuizList = () => {
-	const [quizes, setQuizes] = useState([]);
-	const [loading, setLoading] = useState(true);
+	const { quizList } = useContext(QuizContext);
+	const { quizes, loading, setQuizListProps } = quizList;
 
 	const CancelToken = axios.CancelToken;
 	const source = CancelToken.source();
@@ -19,15 +20,14 @@ const QuizList = () => {
 				const response = await axios.get(`${BASE_URL}/quizes.json`, {
 					cancelToken: source.token,
 				});
-				const qzs = [];
+				const quizes = [];
 				Object.keys(response.data).forEach((key, index) => {
-					qzs.push({
+					quizes.push({
 						id: key,
 						name: `Test N${index + 1}`,
 					});
 				});
-				setLoading(false);
-				setQuizes(qzs);
+				setQuizListProps(false, quizes);
 			} catch (error) {
 				console.log(error);
 			}
@@ -38,7 +38,8 @@ const QuizList = () => {
 		return () => {
 			source.cancel();
 		};
-	});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const renderQuizes = () => {
 		return quizes.map((quiz) => {

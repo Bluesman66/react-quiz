@@ -7,7 +7,8 @@ import { QuizContext } from '../../context';
 import s from './FinishedQuiz.module.scss';
 
 const FinishedQuiz = () => {
-	const { results, quiz, quizLength, retry } = useContext(QuizContext);
+	const { quiz } = useContext(QuizContext);
+	const { quizes, results, retryQuiz } = quiz;
 
 	const successCount = Object.keys(results).reduce((total, key) => {
 		if (results[key] === CLASS_SUCCESS) {
@@ -19,7 +20,7 @@ const FinishedQuiz = () => {
 	return (
 		<div className={s.FinishedQuiz}>
 			<ul>
-				{quiz.map((quizItem, index) => {
+				{quizes.map((quizItem, index) => {
 					const cls = [
 						'fa',
 						results[quizItem.id] === CLASS_ERROR ? 'fa-times' : 'fa-check',
@@ -35,10 +36,10 @@ const FinishedQuiz = () => {
 				})}
 			</ul>
 			<p>
-				Correctly {successCount} of {quizLength}
+				Correctly {successCount} of {quizes.length}
 			</p>
 			<div>
-				<Button onClick={retry} type="primary">
+				<Button onClick={retryQuiz} type="primary">
 					Retry
 				</Button>
 				<Link to="/">
