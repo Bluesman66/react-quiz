@@ -1,48 +1,36 @@
 import { Button, Input, Select } from '../../components';
-import React, { useState } from 'react';
-import { createControl, validate, validateForm } from '../../form';
+import React, { useContext } from 'react';
+import { validate, validateForm } from '../../form';
 
 import { Auxiliary } from '../../hoc';
 import { BASE_URL } from '../../consts';
+import { QuizContext } from '../../context';
 import axios from 'axios';
 import s from './QuizCreator.module.scss';
 
-const createOptionControl = (number) => {
-	return createControl(
-		{
-			label: `Variant ${number}`,
-			error: 'Value can not be empty',
-			id: number,
-		},
-		{ required: true }
-	);
-};
-
-const createFormControls = () => {
-	return {
-		question: createControl(
-			{
-				label: 'Please enter question',
-				error: 'Question can not be empty',
-			},
-			{ required: true }
-		),
-		option1: createOptionControl(1),
-		option2: createOptionControl(2),
-		option3: createOptionControl(3),
-		option4: createOptionControl(4),
-	};
-};
-
 const QuizCreator = () => {
-	const [quiz, setQuiz] = useState([]);
-	const [formValid, setFormValid] = useState(false);
-	const [correctAnswerId, setCorrectAnswerId] = useState(1);
-	const [formControls, setFormControls] = useState(createFormControls());
+	const { quizCreator } = useContext(QuizContext);
+	const {
+		quiz,
+		formValid,
+		correctAnswerId,
+		formControls,
+		setQuizCreatorQuiz,
+		setQuizCreatorFormValid,
+		setQuizCreatorCorrectAnswerId,
+		setQuizCreatorFormControls
+	} = quizCreator;
 
 	const submit = (event) => {
 		event.preventDefault();
 	};
+
+	const setQuizCreatorProps = (quiz, formValid, correctAnswerId) => {
+		setQuizCreatorQuiz(quiz);
+		setQuizCreatorFormValid(formValid);
+		setQuizCreatorCorrectAnswerId(correctAnswerId);
+		setQuizCreatorFormControls();
+	}
 
 	const addQuestion = (event) => {
 		event.preventDefault();
@@ -65,21 +53,14 @@ const QuizCreator = () => {
 		};
 
 		quizClone.push(questionItem);
-
-		setQuiz(quizClone);
-		setFormValid(false);
-		setCorrectAnswerId(1);
-		setFormControls(createFormControls());
+		setQuizCreatorProps(quizClone, false, 1);
 	};
 
 	const createQuiz = async (event) => {
 		event.preventDefault();
 		try {
 			await axios.post(`${BASE_URL}/quizes.json`, quiz);
-			setQuiz([]);
-			setFormValid(false);
-			setCorrectAnswerId(1);
-			setFormControls(createFormControls());
+			setQuizCreatorProps([], false, 1);
 		} catch (error) {
 			console.log(error);
 		}
@@ -95,8 +76,8 @@ const QuizCreator = () => {
 
 		formControlsClone[controlName] = control;
 
-		setFormControls(formControlsClone);
-		setFormValid(validateForm(formControlsClone));
+		setQuizCreatorFormControls(formControlsClone);
+		setQuizCreatorFormValid(validateForm(formControlsClone));
 	};
 
 	const renderControls = () => {
@@ -121,7 +102,7 @@ const QuizCreator = () => {
 	};
 
 	const selectChange = (event) => {
-		setCorrectAnswerId(+event.target.value);
+		setQuizCreatorCorrectAnswerId(+event.target.value);
 	};
 
 	const select = (

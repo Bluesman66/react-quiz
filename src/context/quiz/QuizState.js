@@ -4,12 +4,17 @@ import {
 	resetStateAction,
 	setAnswerStateAction,
 	setIsFinishedAction,
+	setQuizCreatorCorrectAnswerIdAction,
+	setQuizCreatorFormControlsAction,
+	setQuizCreatorFormValidAction,
+	setQuizCreatorQuizAction,
 	setQuizListPropsAction,
 	setQuizPropsAction,
 } from '../actions';
 
 import QuizContext from './QuizContext';
 import React from 'react';
+import { createControl } from '../../form';
 import quizReducer from './quizReducer';
 import thunk from 'redux-thunk';
 import useEnhancedReducer from 'react-enhanced-reducer-hook';
@@ -20,6 +25,33 @@ const logMiddleware = ({ getState }) => {
 		console.log('Action:', action);
 		next(action);
 		console.log('Next State:', getState());
+	};
+};
+
+const createOptionControl = (number) => {
+	return createControl(
+		{
+			label: `Variant ${number}`,
+			error: 'Value can not be empty',
+			id: number,
+		},
+		{ required: true }
+	);
+};
+
+const createFormControls = () => {
+	return {
+		question: createControl(
+			{
+				label: 'Please enter question',
+				error: 'Question can not be empty',
+			},
+			{ required: true }
+		),
+		option1: createOptionControl(1),
+		option2: createOptionControl(2),
+		option3: createOptionControl(3),
+		option4: createOptionControl(4),
 	};
 };
 
@@ -41,6 +73,17 @@ const QuizState = (props) => {
 			quizes: [],
 			loading: true,
 			setQuizListProps,
+		},
+
+		quizCreator: {
+			quiz: [],
+			formValid: false,
+			correctAnswerId: 1,
+			formControls: createFormControls(),
+			setQuizCreatorQuiz,
+			setQuizCreatorFormValid,
+			setQuizCreatorCorrectAnswerId,
+			setQuizCreatorFormControls,
 		},
 	};
 
@@ -95,6 +138,24 @@ const QuizState = (props) => {
 		dispatch(setQuizListPropsAction(loading, quizes));
 	}
 
+	function setQuizCreatorQuiz(quiz) {
+		dispatch(setQuizCreatorQuizAction(quiz));
+	}
+
+	function setQuizCreatorFormValid(formValid) {
+		dispatch(setQuizCreatorFormValidAction(formValid));
+	}
+
+	function setQuizCreatorCorrectAnswerId(answerId) {
+		dispatch(setQuizCreatorCorrectAnswerIdAction(answerId));
+	}
+
+	function setQuizCreatorFormControls(formControls) {
+		formControls
+			? dispatch(setQuizCreatorFormControlsAction(formControls))
+			: dispatch(setQuizCreatorFormControlsAction(createFormControls()));
+	}
+
 	const activeQuiz = state.quiz.quizes[state.activeQuestion];
 
 	return (
@@ -107,6 +168,7 @@ const QuizState = (props) => {
 				quizLength: state.quiz.quizes.length,
 				quiz: state.quiz,
 				quizList: state.quizList,
+				quizCreator: state.quizCreator,
 				answerClick,
 			}}
 		>
