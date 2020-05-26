@@ -8,7 +8,8 @@ import {
 	setQuizCreatorFormControlsAction,
 	setQuizCreatorFormValidAction,
 	setQuizCreatorQuizAction,
-	setQuizListPropsAction,
+	setQuizListLoadingAction,
+	setQuizListQuizesAction,
 	setQuizLoadingAction,
 	setQuizQuizesAction,
 } from '../actions';
@@ -47,7 +48,8 @@ const QuizState = (props) => {
 		quizList: {
 			quizes: [],
 			loading: true,
-			setQuizListProps,
+			setQuizListQuizes, 
+			setQuizListLoading,
 		},
 
 		quizCreator: {
@@ -140,8 +142,12 @@ const QuizState = (props) => {
 		dispatch(setQuizLoadingAction(loading));
 	}
 
-	function setQuizListProps(loading, quizes) {
-		dispatch(setQuizListPropsAction(loading, quizes));
+	function setQuizListQuizes(quizes) {
+		dispatch(setQuizListQuizesAction(quizes));
+	}
+
+	function setQuizListLoading(loading) {
+		dispatch(setQuizListLoadingAction(loading));
 	}
 
 	function setQuizCreatorQuiz(quiz) {

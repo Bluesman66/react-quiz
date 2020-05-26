@@ -9,10 +9,15 @@ import s from './QuizList.module.scss';
 
 const QuizList = () => {
 	const { quizList } = useContext(QuizContext);
-	const { quizes, loading, setQuizListProps } = quizList;
+	const { quizes, loading, setQuizListQuizes, setQuizListLoading } = quizList;
 
 	const CancelToken = axios.CancelToken;
 	const source = CancelToken.source();
+
+	const setQuizListProps = (quizes, loading) => {
+		setQuizListQuizes(quizes);
+		setQuizListLoading(loading);
+	};
 
 	useEffect(() => {
 		const getQuizList = async () => {
@@ -27,7 +32,7 @@ const QuizList = () => {
 						name: `Test N${index + 1}`,
 					});
 				});
-				setQuizListProps(false, quizes);
+				setQuizListProps(quizes, false);
 			} catch (error) {
 				console.log(error);
 			}
