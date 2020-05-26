@@ -8,7 +8,8 @@ import {
 	SET_QUIZ_CREATOR_FORM_VALID,
 	SET_QUIZ_CREATOR_QUIZ,
 	SET_QUIZ_LIST_PROPS,
-	SET_QUIZ_PROPS,
+	SET_QUIZ_LOADING,
+	SET_QUIZ_QUIZES
 } from './types';
 
 export function goNextQuestionAction() {
@@ -37,14 +38,18 @@ export function resetStateAction() {
 	};
 }
 
-export function setQuizPropsAction(loading, quizes) {
+export function setQuizQuizesAction(value) {
 	return {
-		type: SET_QUIZ_PROPS,
-		payload: {
-			loading,
-			quizes,
-		},
+		type: SET_QUIZ_QUIZES,
+		payload: value,
 	};
+}
+
+export function setQuizLoadingAction(value) {
+	return {
+		type: SET_QUIZ_LOADING,
+		payload: value
+	}
 }
 
 export function setQuizListPropsAction(loading, quizes) {

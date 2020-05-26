@@ -9,7 +9,8 @@ import {
 	setQuizCreatorFormValidAction,
 	setQuizCreatorQuizAction,
 	setQuizListPropsAction,
-	setQuizPropsAction,
+	setQuizLoadingAction,
+	setQuizQuizesAction,
 } from '../actions';
 
 import QuizContext from './QuizContext';
@@ -28,33 +29,6 @@ const logMiddleware = ({ getState }) => {
 	};
 };
 
-const createOptionControl = (number) => {
-	return createControl(
-		{
-			label: `Variant ${number}`,
-			error: 'Value can not be empty',
-			id: number,
-		},
-		{ required: true }
-	);
-};
-
-const createFormControls = () => {
-	return {
-		question: createControl(
-			{
-				label: 'Please enter question',
-				error: 'Question can not be empty',
-			},
-			{ required: true }
-		),
-		option1: createOptionControl(1),
-		option2: createOptionControl(2),
-		option3: createOptionControl(3),
-		option4: createOptionControl(4),
-	};
-};
-
 const QuizState = (props) => {
 	const initialState = {
 		activeQuestion: 0,
@@ -62,10 +36,11 @@ const QuizState = (props) => {
 
 		quiz: {
 			quizes: [],
-			results: {},
 			loading: true,
+			results: {},
 			isFinished: false,
-			setQuizProps,
+			setQuizQuizes,
+			setQuizLoading,
 			retryQuiz,
 		},
 
@@ -92,7 +67,34 @@ const QuizState = (props) => {
 		logMiddleware,
 	]);
 
-	const answerClick = (answerId) => {
+	function createOptionControl(number) {
+		return createControl(
+			{
+				label: `Variant ${number}`,
+				error: 'Value can not be empty',
+				id: number,
+			},
+			{ required: true }
+		);
+	}
+
+	function createFormControls() {
+		return {
+			question: createControl(
+				{
+					label: 'Please enter question',
+					error: 'Question can not be empty',
+				},
+				{ required: true }
+			),
+			option1: createOptionControl(1),
+			option2: createOptionControl(2),
+			option3: createOptionControl(3),
+			option4: createOptionControl(4),
+		};
+	}
+
+	function answerClick(answerId) {
 		if (state.answerState) {
 			const key = Object.keys(state.answerState)[0];
 			if (state.answerState[key] === CLASS_SUCCESS) return;
@@ -120,18 +122,22 @@ const QuizState = (props) => {
 			results[question.id] = CLASS_ERROR;
 			dispatch(setAnswerStateAction(answerId, CLASS_ERROR, results));
 		}
-	};
+	}
 
-	const isQuizFinished = () => {
+	function isQuizFinished() {
 		return state.activeQuestion + 1 === state.quiz.quizes.length;
-	};
+	}
 
 	function retryQuiz() {
 		dispatch(resetStateAction());
 	}
 
-	function setQuizProps(loading, quizes) {
-		dispatch(setQuizPropsAction(loading, quizes));
+	function setQuizQuizes(quizes) {
+		dispatch(setQuizQuizesAction(quizes));
+	}
+
+	function setQuizLoading(loading) {
+		dispatch(setQuizLoadingAction(loading));
 	}
 
 	function setQuizListProps(loading, quizes) {

@@ -9,10 +9,15 @@ import s from './Quiz.module.scss';
 
 const Quiz = (props) => {
 	const { quiz } = useContext(QuizContext);
-	const { loading, isFinished, setQuizProps } = quiz;
+	const { loading, isFinished, setQuizQuizes, setQuizLoading } = quiz;
 
 	const CancelToken = axios.CancelToken;
 	const source = CancelToken.source();
+
+	const setQuizProps = (quizes, loading) => {
+		setQuizQuizes(quizes);
+		setQuizLoading(loading);
+	};
 
 	useEffect(() => {
 		const getQuiz = async () => {
@@ -23,7 +28,7 @@ const Quiz = (props) => {
 						cancelToken: source.token,
 					}
 				);
-				setQuizProps(false, response.data);
+				setQuizProps(response.data, false);
 			} catch (error) {
 				console.log(error);
 			}

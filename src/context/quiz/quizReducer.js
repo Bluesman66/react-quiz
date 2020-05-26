@@ -8,7 +8,8 @@ import {
 	SET_QUIZ_CREATOR_FORM_VALID,
 	SET_QUIZ_CREATOR_QUIZ,
 	SET_QUIZ_LIST_PROPS,
-	SET_QUIZ_PROPS,
+	SET_QUIZ_LOADING,
+	SET_QUIZ_QUIZES
 } from '../types';
 
 const handlers = {
@@ -36,12 +37,18 @@ const handlers = {
 		isFinished: false,
 		results: {},
 	}),
-	[SET_QUIZ_PROPS]: (state, { payload }) => ({
+	[SET_QUIZ_QUIZES]: (state, { payload }) => ({
 		...state,
 		quiz: {
 			...state.quiz,
-			loading: payload.loading,
-			quizes: payload.quizes,
+			quizes: payload,
+		},
+	}),
+	[SET_QUIZ_LOADING]: (state, { payload }) => ({
+		...state,
+		quiz: {
+			...state.quiz,
+			loading: payload,
 		},
 	}),
 	[SET_QUIZ_LIST_PROPS]: (state, { payload }) => ({
