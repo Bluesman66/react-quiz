@@ -6,9 +6,10 @@ import { Loader } from '../../components';
 import { QuizContext } from '../../context';
 import axios from 'axios';
 import s from './Quiz.module.scss';
+import { setQuizesAction } from '../../context/actions/quiz';
 
 const Quiz = (props) => {
-	const { quiz, setQuizes } = useContext(QuizContext);
+	const { quiz, dispatch } = useContext(QuizContext);
 	const { isFinished } = quiz;
 	const [loading, setLoading] = useState(true);
 
@@ -24,7 +25,7 @@ const Quiz = (props) => {
 						cancelToken: source.token,
 					}
 				);
-				setQuizes(response.data);
+				dispatch(setQuizesAction(response.data));
 				setLoading(false);
 			} catch (error) {
 				console.log(error);

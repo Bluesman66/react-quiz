@@ -4,10 +4,11 @@ import React, { useContext } from 'react';
 import Button from '../UI/Button/Button';
 import { Link } from 'react-router-dom';
 import { QuizContext } from '../../context';
+import { resetStateAction } from '../../context/actions/quiz';
 import s from './FinishedQuiz.module.scss';
 
 const FinishedQuiz = () => {
-	const { quiz, retryQuiz } = useContext(QuizContext);
+	const { quiz, dispatch } = useContext(QuizContext);
 	const { quizes, results } = quiz;
 
 	const successCount = Object.keys(results).reduce((total, key) => {
@@ -39,7 +40,7 @@ const FinishedQuiz = () => {
 				Correctly {successCount} of {quizes.length}
 			</p>
 			<div>
-				<Button onClick={retryQuiz} type="primary">
+				<Button onClick={() => dispatch(resetStateAction())} type="primary">
 					Retry
 				</Button>
 				<Link to="/">

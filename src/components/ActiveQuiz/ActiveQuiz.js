@@ -5,7 +5,12 @@ import { QuizContext } from '../../context';
 import s from './ActiveQuiz.module.scss';
 
 const ActiveQuiz = () => {
-	const { question, answerNumber, quizLength } = useContext(QuizContext);
+	const { quiz } = useContext(QuizContext);
+	const { quizes, activeQuestion } = quiz;
+
+	const activeQuiz = quizes[activeQuestion];
+	const question = activeQuiz ? activeQuiz.question : '';
+	const answerNumber = activeQuestion + 1;
 
 	return (
 		<div className={s.ActiveQuiz}>
@@ -14,7 +19,7 @@ const ActiveQuiz = () => {
 					<strong>{answerNumber}</strong>.&nbsp;{question}
 				</span>
 				<small>
-					{answerNumber} of {quizLength}
+					{answerNumber} of {quizes.length}
 				</small>
 			</p>
 			<AnswersList />

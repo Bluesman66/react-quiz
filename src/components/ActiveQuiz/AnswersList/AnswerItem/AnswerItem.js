@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 
 import { QuizContext } from '../../../../context';
+import { answerClickAction } from '../../../../context/actions/quiz';
 import s from './AnswerItem.module.scss';
 
 const AnswerItem = (props) => {
-	const { answerClick } = useContext(QuizContext);
+	const { dispatch } = useContext(QuizContext);
 
 	const cls = [s.AnswerItem];
 	if (props.state) {
@@ -14,7 +15,7 @@ const AnswerItem = (props) => {
 	return (
 		<li
 			className={cls.join(' ')}
-			onClick={() => answerClick(props.answer.id)}
+			onClick={() => dispatch(answerClickAction(props.answer.id))}
 		>
 			{props.answer.text}
 		</li>
