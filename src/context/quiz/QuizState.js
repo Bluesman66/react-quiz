@@ -1,11 +1,8 @@
-import { CLASS_ERROR, CLASS_SUCCESS } from '../../consts';
 import {
-	goNextQuestionAction,
+	answerClickAction,
 	resetStateAction,
-	setAnswerStateAction,
-	setIsFinishedAction,
-	setQuizesAction,
-} from '../actions';
+	setQuizesAction
+} from '../actions/quiz';
 import { rootInitialState, rootReducer } from '../reducers/root';
 
 import QuizContext from './QuizContext';
@@ -28,47 +25,13 @@ const QuizState = ({ children }) => {
 		logMiddleware,
 	]);
 
-	const answerClick = (answerId) => {
-		if (state.quiz.answerState) {
-			const key = Object.keys(state.quiz.answerState)[0];
-			if (state.quiz.answerState[key] === CLASS_SUCCESS) return;
-		}
-
-		const question = state.quiz.quizes[state.quiz.activeQuestion];
-		const results = state.quiz.results;
-
-		if (question.correctAnswerId === answerId) {
-			if (!results[question.id]) {
-				results[question.id] = CLASS_SUCCESS;
-			}
-
-			dispatch(setAnswerStateAction(answerId, CLASS_SUCCESS, results));
-
-			const timeout = window.setTimeout(() => {
-				if (isQuizFinished()) {
-					dispatch(setIsFinishedAction(true));
-				} else {
-					dispatch(goNextQuestionAction());
-				}
-				window.clearTimeout(timeout);
-			}, 1000);
-		} else {
-			results[question.id] = CLASS_ERROR;
-			dispatch(setAnswerStateAction(answerId, CLASS_ERROR, results));
-		}
-	};
-
-	const isQuizFinished = () => {
-		return state.quiz.activeQuestion + 1 === state.quiz.quizes.length;
-	};
-
 	const retryQuiz = () => {
 		dispatch(resetStateAction());
-	}
+	};
 
 	const setQuizes = (quizes) => {
 		dispatch(setQuizesAction(quizes));
-	}
+	};
 
 	const activeQuiz = state.quiz.quizes[state.quiz.activeQuestion];
 
@@ -81,7 +44,7 @@ const QuizState = ({ children }) => {
 				answerState: state.quiz.answerState,
 				quizLength: state.quiz.quizes.length,
 				quiz: state.quiz,
-				answerClick,
+				answerClick: answerId => dispatch(answerClickAction(answerId)),
 				setQuizes,
 				retryQuiz,
 			}}
