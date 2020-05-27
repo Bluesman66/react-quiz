@@ -7,8 +7,8 @@ import { QuizContext } from '../../context';
 import s from './FinishedQuiz.module.scss';
 
 const FinishedQuiz = () => {
-	const { quiz } = useContext(QuizContext);
-	const { quizes, results, retryQuiz } = quiz;
+	const { quiz, retryQuiz } = useContext(QuizContext);
+	const { quizes, results } = quiz;
 
 	const successCount = Object.keys(results).reduce((total, key) => {
 		if (results[key] === CLASS_SUCCESS) {

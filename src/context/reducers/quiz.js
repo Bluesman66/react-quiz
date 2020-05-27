@@ -6,6 +6,14 @@ import {
 	SET_QUIZES,
 } from '../types';
 
+const initialState = {
+	activeQuestion: 0,
+	answerState: null,
+	quizes: [],
+	results: {},
+	isFinished: false,
+};
+
 const handlers = {
 	[SET_NEXT_QUESTION]: (state) => ({
 		...state,
@@ -19,10 +27,7 @@ const handlers = {
 	}),
 	[SET_IS_FINISHED]: (state, { payload }) => ({
 		...state,
-		quiz: {
-			...state.quiz,
-			isFinished: payload,
-		},
+		isFinished: payload,
 	}),
 	[RESET_STATE]: (state) => ({
 		...state,
@@ -33,10 +38,7 @@ const handlers = {
 	}),
 	[SET_QUIZES]: (state, { payload }) => ({
 		...state,
-		quiz: {
-			...state.quiz,
-			quizes: payload,
-		},
+		quizes: payload,
 	}),
 	DEFAULT: (state) => state,
 };
@@ -46,4 +48,4 @@ const quizReducer = (state, action) => {
 	return handler(state, action);
 };
 
-export default quizReducer;
+export default [quizReducer, initialState];

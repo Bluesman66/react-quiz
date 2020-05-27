@@ -6,10 +6,10 @@ import {
 	setIsFinishedAction,
 	setQuizesAction,
 } from '../actions';
+import { rootInitialState, rootReducer } from '../reducers/root';
 
 import QuizContext from './QuizContext';
 import React from 'react';
-import quizReducer from './quizReducer';
 import thunk from 'redux-thunk';
 import useEnhancedReducer from 'react-enhanced-reducer-hook';
 
@@ -22,32 +22,19 @@ const logMiddleware = ({ getState }) => {
 	};
 };
 
-const QuizState = (props) => {
-	const initialState = {
-		activeQuestion: 0,
-		answerState: null,
-
-		quiz: {
-			quizes: [],
-			results: {},
-			isFinished: false,
-			setQuizes,
-			retryQuiz,
-		},
-	};
-
-	const [state, dispatch] = useEnhancedReducer(quizReducer, initialState, [
+const QuizState = ({ children }) => {
+	const [state, dispatch] = useEnhancedReducer(rootReducer, rootInitialState, [
 		thunk,
 		logMiddleware,
 	]);
 
 	const answerClick = (answerId) => {
-		if (state.answerState) {
-			const key = Object.keys(state.answerState)[0];
-			if (state.answerState[key] === CLASS_SUCCESS) return;
+		if (state.quiz.answerState) {
+			const key = Object.keys(state.quiz.answerState)[0];
+			if (state.quiz.answerState[key] === CLASS_SUCCESS) return;
 		}
 
-		const question = state.quiz.quizes[state.activeQuestion];
+		const question = state.quiz.quizes[state.quiz.activeQuestion];
 		const results = state.quiz.results;
 
 		if (question.correctAnswerId === answerId) {
@@ -72,33 +59,34 @@ const QuizState = (props) => {
 	};
 
 	const isQuizFinished = () => {
-		return state.activeQuestion + 1 === state.quiz.quizes.length;
+		return state.quiz.activeQuestion + 1 === state.quiz.quizes.length;
 	};
 
-	function retryQuiz() {
+	const retryQuiz = () => {
 		dispatch(resetStateAction());
 	}
 
-	function setQuizes(quizes) {
+	const setQuizes = (quizes) => {
 		dispatch(setQuizesAction(quizes));
 	}
 
-	const activeQuiz = state.quiz.quizes[state.activeQuestion];
+	const activeQuiz = state.quiz.quizes[state.quiz.activeQuestion];
 
 	return (
 		<QuizContext.Provider
 			value={{
 				question: activeQuiz ? activeQuiz.question : '',
 				answers: activeQuiz ? activeQuiz.answers : [],
-				answerNumber: state.activeQuestion + 1,
-				answerState: state.answerState,
+				answerNumber: state.quiz.activeQuestion + 1,
+				answerState: state.quiz.answerState,
 				quizLength: state.quiz.quizes.length,
 				quiz: state.quiz,
-				quizList: state.quizList,
 				answerClick,
+				setQuizes,
+				retryQuiz,
 			}}
 		>
-			{props.children}
+			{children}
 		</QuizContext.Provider>
 	);
 };

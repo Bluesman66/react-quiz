@@ -8,8 +8,8 @@ import axios from 'axios';
 import s from './Quiz.module.scss';
 
 const Quiz = (props) => {
-	const { quiz } = useContext(QuizContext);	
-	const { isFinished, setQuizes } = quiz;
+	const { quiz, setQuizes } = useContext(QuizContext);
+	const { isFinished } = quiz;
 	const [loading, setLoading] = useState(true);
 
 	const CancelToken = axios.CancelToken;
