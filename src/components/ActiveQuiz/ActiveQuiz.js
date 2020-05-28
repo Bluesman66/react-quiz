@@ -6,9 +6,9 @@ import s from './ActiveQuiz.module.scss';
 
 const ActiveQuiz = () => {
 	const { quiz } = useContext(QuizContext);
-	const { quizes, activeQuestion } = quiz;
+	const { activeQuestion } = quiz;
 
-	const activeQuiz = quizes[activeQuestion];
+	const activeQuiz = quiz.quiz[activeQuestion];
 	const question = activeQuiz ? activeQuiz.question : '';
 	const answerNumber = activeQuestion + 1;
 
@@ -19,7 +19,7 @@ const ActiveQuiz = () => {
 					<strong>{answerNumber}</strong>.&nbsp;{question}
 				</span>
 				<small>
-					{answerNumber} of {quizes.length}
+					{answerNumber} of {quiz.quiz.length}
 				</small>
 			</p>
 			<AnswersList />

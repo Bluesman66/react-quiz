@@ -6,7 +6,7 @@ import {
 	SET_ANSWER_STATE,
 	SET_IS_FINISHED,
 	SET_NEXT_QUESTION,
-	SET_QUIZES,
+	SET_QUIZ,
 } from '../types';
 
 const initialState = {
@@ -17,6 +17,7 @@ const initialState = {
 	isFinished: false,
 	loading: false,
 	error: null,
+	quiz: null,
 };
 
 const handlers = {
@@ -41,9 +42,9 @@ const handlers = {
 		isFinished: false,
 		results: {},
 	}),
-	[SET_QUIZES]: (state, { payload }) => ({
+	[SET_QUIZ]: (state, { payload }) => ({
 		...state,
-		quizes: payload,
+		quiz: payload,
 	}),
 	[FETCH_QUIZES_START]: (state) => ({
 		...state,
@@ -52,7 +53,7 @@ const handlers = {
 	[FETCH_QUIZES_SUCCESS]: (state, { payload }) => ({
 		...state,
 		quizes: payload,
-		loading: false
+		loading: false,
 	}),
 	[FETCH_QUIZES_ERROR]: (state, { payload }) => ({
 		...state,

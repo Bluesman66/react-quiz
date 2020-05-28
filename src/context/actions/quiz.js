@@ -7,7 +7,7 @@ import {
 	SET_ANSWER_STATE,
 	SET_IS_FINISHED,
 	SET_NEXT_QUESTION,
-	SET_QUIZES,
+	SET_QUIZ,
 } from '../types';
 
 import { BASE_URL } from '../../consts';
@@ -80,10 +80,10 @@ export function resetStateAction() {
 	};
 }
 
-export function setQuizesAction(quizes) {
+export function setQuizesAction(quiz) {
 	return {
-		type: SET_QUIZES,
-		payload: quizes,
+		type: SET_QUIZ,
+		payload: quiz,
 	};
 }
 
@@ -96,7 +96,7 @@ export function answerClickAction(answerId) {
 			if (state.answerState[key] === CLASS_SUCCESS) return;
 		}
 
-		const question = state.quizes[state.activeQuestion];
+		const question = state.quiz[state.activeQuestion];
 		const results = state.results;
 
 		if (question.correctAnswerId === answerId) {
@@ -122,5 +122,5 @@ export function answerClickAction(answerId) {
 }
 
 function isQuizFinished(state) {
-	return state.activeQuestion + 1 === state.quizes.length;
+	return state.activeQuestion + 1 === state.quiz.length;
 }

@@ -6,9 +6,9 @@ import s from './AnswersList.module.scss';
 
 const AnswersList = () => {
 	const { quiz } = useContext(QuizContext);
-	const { quizes, activeQuestion, answerState } = quiz;
+	const { activeQuestion, answerState } = quiz;
 
-	const activeQuiz = quizes[activeQuestion];
+	const activeQuiz = quiz.quiz[activeQuestion];
 	const answers = activeQuiz ? activeQuiz.answers : [];
 
 	return (

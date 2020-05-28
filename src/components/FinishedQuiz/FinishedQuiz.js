@@ -21,7 +21,7 @@ const FinishedQuiz = () => {
 	return (
 		<div className={s.FinishedQuiz}>
 			<ul>
-				{quizes.map((quizItem, index) => {
+				{quiz.quiz.map((quizItem, index) => {
 					const cls = [
 						'fa',
 						results[quizItem.id] === CLASS_ERROR ? 'fa-times' : 'fa-check',
