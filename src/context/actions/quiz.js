@@ -13,9 +13,9 @@ import {
 import { BASE_URL } from '../../consts';
 import axios from 'axios';
 
-export function fetchQuizes(token) {
+export function fetchQuizesAction(token) {
 	return async (dispatch) => {
-		dispatch(fetchQuizesStart());
+		dispatch(fetchQuizesStartAction());
 		try {
 			const response = await axios.get(`${BASE_URL}/quizes.json`, {
 				cancelToken: token,
@@ -27,48 +27,48 @@ export function fetchQuizes(token) {
 					name: `Test N${index + 1}`,
 				});
 			});
-			dispatch(fetchQuizesSuccess(quizes));
+			dispatch(fetchQuizesSuccessAction(quizes));
 		} catch (error) {
-			dispatch(fetchQuizesError(error));
+			dispatch(fetchQuizesErrorAction(error));
 		}
 	};
 }
 
-export function fetchQuizById(quizId, token) {
+export function fetchQuizByIdAction(quizId, token) {
 	return async (dispatch) => {
-		dispatch(fetchQuizesStart());
+		dispatch(fetchQuizesStartAction());
 		try {
 			const response = await axios.get(`${BASE_URL}/quizes/${quizId}.json`, {
 				cancelToken: token,
 			});
-			dispatch(fetchQuizSuccess(response.data));
+			dispatch(fetchQuizSuccessAction(response.data));
 		} catch (error) {
-			dispatch(fetchQuizesError(error));
+			dispatch(fetchQuizesErrorAction(error));
 		}
 	};
 }
 
-export function fetchQuizSuccess(quiz) {
+export function fetchQuizSuccessAction(quiz) {
 	return {
 		type: FETCH_QUIZ_SUCCESS,
 		payload: quiz,
 	};
 }
 
-export function fetchQuizesStart() {
+export function fetchQuizesStartAction() {
 	return {
 		type: FETCH_QUIZES_START,
 	};
 }
 
-export function fetchQuizesSuccess(quizes) {
+export function fetchQuizesSuccessAction(quizes) {
 	return {
 		type: FETCH_QUIZES_SUCCESS,
 		payload: quizes,
 	};
 }
 
-export function fetchQuizesError(error) {
+export function fetchQuizesErrorAction(error) {
 	return {
 		type: FETCH_QUIZES_ERROR,
 		payload: error,

@@ -2,8 +2,8 @@ import { Button, Input, Select } from '../../components';
 import React, { useContext, useState } from 'react';
 import { createControl, validate, validateForm } from '../../form';
 import {
-	createQuizQuestion,
-	finishCreateQuiz,
+	createQuizQuestionAction,
+	finishCreateQuizAction,
 } from '../../context/actions/create';
 
 import { Auxiliary } from '../../hoc';
@@ -71,7 +71,7 @@ const QuizCreator = () => {
 
 		quizClone.push(questionItem);
 
-		dispatch(createQuizQuestion(quizClone));
+		dispatch(createQuizQuestionAction(quizClone));
 
 		setFormValid(false);
 		setCorrectAnswerId(1);
@@ -85,7 +85,7 @@ const QuizCreator = () => {
 		setCorrectAnswerId(1);
 		setFormControls(createFormControls());
 
-		dispatch(finishCreateQuiz());
+		dispatch(finishCreateQuizAction());
 	};
 
 	const change = (value, controlName) => {

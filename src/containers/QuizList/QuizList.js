@@ -4,7 +4,7 @@ import { Loader } from '../../components';
 import { NavLink } from 'react-router-dom';
 import { QuizContext } from '../../context';
 import axios from 'axios';
-import { fetchQuizes } from '../../context/actions/quiz';
+import { fetchQuizesAction } from '../../context/actions/quiz';
 import s from './QuizList.module.scss';
 
 const QuizList = () => {
@@ -13,7 +13,7 @@ const QuizList = () => {
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();
-		dispatch(fetchQuizes(source.token));
+		dispatch(fetchQuizesAction(source.token));
 		return () => {
 			source.cancel();
 		};

@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from 'react';
 import { Loader } from '../../components';
 import { QuizContext } from '../../context';
 import axios from 'axios';
-import { fetchQuizById } from '../../context/actions/quiz';
+import { fetchQuizByIdAction } from '../../context/actions/quiz';
 import s from './Quiz.module.scss';
 
 const Quiz = (props) => {
@@ -13,7 +13,7 @@ const Quiz = (props) => {
 
 	useEffect(() => {
 		const source = axios.CancelToken.source();
-		dispatch(fetchQuizById(props.match.params.id, source.token));
+		dispatch(fetchQuizByIdAction(props.match.params.id, source.token));
 		return () => {
 			source.cancel();
 		};
