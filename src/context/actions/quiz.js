@@ -3,11 +3,11 @@ import {
 	FETCH_QUIZES_ERROR,
 	FETCH_QUIZES_START,
 	FETCH_QUIZES_SUCCESS,
+	FETCH_QUIZ_SUCCESS,
 	RESET_STATE,
 	SET_ANSWER_STATE,
 	SET_IS_FINISHED,
 	SET_NEXT_QUESTION,
-	SET_QUIZ,
 } from '../types';
 
 import { BASE_URL } from '../../consts';
@@ -31,6 +31,27 @@ export function fetchQuizes(token) {
 		} catch (error) {
 			dispatch(fetchQuizesError(error));
 		}
+	};
+}
+
+export function fetchQuizById(quizId, token) {
+	return async (dispatch) => {
+		dispatch(fetchQuizesStart());
+		try {
+			const response = await axios.get(`${BASE_URL}/quizes/${quizId}.json`, {
+				cancelToken: token,
+			});
+			dispatch(fetchQuizSuccess(response.data));
+		} catch (error) {
+			dispatch(fetchQuizesError(error));
+		}
+	};
+}
+
+export function fetchQuizSuccess(quiz) {
+	return {
+		type: FETCH_QUIZ_SUCCESS,
+		payload: quiz,
 	};
 }
 
@@ -77,13 +98,6 @@ export function setAnswerStateAction(answerId, state, results) {
 export function resetStateAction() {
 	return {
 		type: RESET_STATE,
-	};
-}
-
-export function setQuizesAction(quiz) {
-	return {
-		type: SET_QUIZ,
-		payload: quiz,
 	};
 }
 

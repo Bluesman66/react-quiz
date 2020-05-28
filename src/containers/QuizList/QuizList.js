@@ -12,8 +12,7 @@ const QuizList = () => {
 	const { quizes, loading } = quiz;
 
 	useEffect(() => {
-		const CancelToken = axios.CancelToken;
-		const source = CancelToken.source();
+		const source = axios.CancelToken.source();
 		dispatch(fetchQuizes(source.token));
 		return () => {
 			source.cancel();

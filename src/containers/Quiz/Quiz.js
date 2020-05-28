@@ -1,39 +1,19 @@
 import { ActiveQuiz, FinishedQuiz } from '../../components';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import { BASE_URL } from '../../consts';
 import { Loader } from '../../components';
 import { QuizContext } from '../../context';
 import axios from 'axios';
+import { fetchQuizById } from '../../context/actions/quiz';
 import s from './Quiz.module.scss';
-import { setQuizesAction } from '../../context/actions/quiz';
 
 const Quiz = (props) => {
 	const { quiz, dispatch } = useContext(QuizContext);
-	const { isFinished } = quiz;
-	const [loading, setLoading] = useState(true);
-
-	const CancelToken = axios.CancelToken;
-	const source = CancelToken.source();
+	const { isFinished, loading } = quiz;
 
 	useEffect(() => {
-		const getQuiz = async () => {
-			try {
-				const response = await axios.get(
-					`${BASE_URL}/quizes/${props.match.params.id}.json`,
-					{
-						cancelToken: source.token,
-					}
-				);
-				dispatch(setQuizesAction(response.data));
-				setLoading(false);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-
-		getQuiz();
-
+		const source = axios.CancelToken.source();
+		dispatch(fetchQuizById(props.match.params.id, source.token));
 		return () => {
 			source.cancel();
 		};
