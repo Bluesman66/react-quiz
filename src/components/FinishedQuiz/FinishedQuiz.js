@@ -9,7 +9,7 @@ import s from './FinishedQuiz.module.scss';
 
 const FinishedQuiz = () => {
 	const { quiz, dispatch } = useContext(QuizContext);
-	const { quizes, results } = quiz;
+	const { results } = quiz;
 
 	const successCount = Object.keys(results).reduce((total, key) => {
 		if (results[key] === CLASS_SUCCESS) {
@@ -37,7 +37,7 @@ const FinishedQuiz = () => {
 				})}
 			</ul>
 			<p>
-				Correctly {successCount} of {quizes.length}
+				Correctly {successCount} of {quiz.quiz.length}
 			</p>
 			<div>
 				<Button onClick={() => dispatch(resetStateAction())} type="primary">

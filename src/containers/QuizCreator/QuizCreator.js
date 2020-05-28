@@ -1,10 +1,13 @@
 import { Button, Input, Select } from '../../components';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { createControl, validate, validateForm } from '../../form';
+import {
+	createQuizQuestion,
+	finishCreateQuiz,
+} from '../../context/actions/create';
 
 import { Auxiliary } from '../../hoc';
-import { BASE_URL } from '../../consts';
-import axios from 'axios';
+import { QuizContext } from '../../context';
 import s from './QuizCreator.module.scss';
 
 const createOptionControl = (number) => {
@@ -35,7 +38,9 @@ const createFormControls = () => {
 };
 
 const QuizCreator = () => {
-	const [quiz, setQuiz] = useState([]);
+	const { create, dispatch } = useContext(QuizContext);
+	const { quiz } = create;
+
 	const [formValid, setFormValid] = useState(false);
 	const [correctAnswerId, setCorrectAnswerId] = useState(1);
 	const [formControls, setFormControls] = useState(createFormControls());
@@ -66,7 +71,8 @@ const QuizCreator = () => {
 
 		quizClone.push(questionItem);
 
-		setQuiz(quizClone);
+		dispatch(createQuizQuestion(quizClone));
+
 		setFormValid(false);
 		setCorrectAnswerId(1);
 		setFormControls(createFormControls());
@@ -74,15 +80,12 @@ const QuizCreator = () => {
 
 	const createQuiz = async (event) => {
 		event.preventDefault();
-		try {
-			await axios.post(`${BASE_URL}/quizes.json`, quiz);
-			setQuiz([]);
-			setFormValid(false);
-			setCorrectAnswerId(1);
-			setFormControls(createFormControls());
-		} catch (error) {
-			console.log(error);
-		}
+
+		setFormValid(false);
+		setCorrectAnswerId(1);
+		setFormControls(createFormControls());
+
+		dispatch(finishCreateQuiz());
 	};
 
 	const change = (value, controlName) => {

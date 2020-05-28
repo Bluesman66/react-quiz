@@ -5,8 +5,14 @@ const initialState = {
 };
 
 const handlers = {
-	[CREATE_QUIZ_QUESTION]: (state) => state,
-	[RESET_QUIZ_CREATION]: (state) => state,
+	[CREATE_QUIZ_QUESTION]: (state, { payload }) => ({
+		...state,
+		quiz: payload,
+	}),
+	[RESET_QUIZ_CREATION]: (state) => ({
+		...state,
+		quiz: [],
+	}),
 	DEFAULT: (state) => state,
 };
 
