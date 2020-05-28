@@ -1,4 +1,7 @@
 import {
+	FETCH_QUIZES_ERROR,
+	FETCH_QUIZES_START,
+	FETCH_QUIZES_SUCCESS,
 	RESET_STATE,
 	SET_ANSWER_STATE,
 	SET_IS_FINISHED,
@@ -12,6 +15,8 @@ const initialState = {
 	quizes: [],
 	results: {},
 	isFinished: false,
+	loading: false,
+	error: null,
 };
 
 const handlers = {
@@ -39,6 +44,19 @@ const handlers = {
 	[SET_QUIZES]: (state, { payload }) => ({
 		...state,
 		quizes: payload,
+	}),
+	[FETCH_QUIZES_START]: (state) => ({
+		...state,
+		loading: true,
+	}),
+	[FETCH_QUIZES_SUCCESS]: (state, { payload }) => ({
+		...state,
+		quizes: payload,
+		loading: false
+	}),
+	[FETCH_QUIZES_ERROR]: (state, { payload }) => ({
+		...state,
+		error: payload,
 	}),
 	DEFAULT: (state) => state,
 };

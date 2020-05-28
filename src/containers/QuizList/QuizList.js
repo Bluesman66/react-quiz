@@ -1,40 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import { BASE_URL } from '../../consts';
 import { Loader } from '../../components';
 import { NavLink } from 'react-router-dom';
+import { QuizContext } from '../../context';
 import axios from 'axios';
+import { fetchQuizes } from '../../context/actions/quiz';
 import s from './QuizList.module.scss';
 
 const QuizList = () => {
-	const [quizes, setQuizes] = useState([]);
-	const [loading, setLoading] = useState(true);
-
-	const CancelToken = axios.CancelToken;
-	const source = CancelToken.source();
+	const { quiz, dispatch } = useContext(QuizContext);
+	const { quizes, loading } = quiz;
 
 	useEffect(() => {
-		const getQuizList = async () => {
-			try {
-				const response = await axios.get(`${BASE_URL}/quizes.json`, {
-					cancelToken: source.token,
-				});
-				const quizes = [];
-				Object.keys(response.data).forEach((key, index) => {
-					quizes.push({
-						id: key,
-						name: `Test N${index + 1}`,
-					});
-				});
-				setQuizes(quizes);
-				setLoading(false);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-
-		getQuizList();
-
+		const CancelToken = axios.CancelToken;
+		const source = CancelToken.source();
+		dispatch(fetchQuizes(source.token));
 		return () => {
 			source.cancel();
 		};

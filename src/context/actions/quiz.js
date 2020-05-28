@@ -1,11 +1,58 @@
 import { CLASS_ERROR, CLASS_SUCCESS } from '../../consts';
 import {
+	FETCH_QUIZES_ERROR,
+	FETCH_QUIZES_START,
+	FETCH_QUIZES_SUCCESS,
 	RESET_STATE,
 	SET_ANSWER_STATE,
 	SET_IS_FINISHED,
 	SET_NEXT_QUESTION,
 	SET_QUIZES,
 } from '../types';
+
+import { BASE_URL } from '../../consts';
+import axios from 'axios';
+
+export function fetchQuizes(token) {
+	return async (dispatch) => {
+		dispatch(fetchQuizesStart());
+		try {
+			const response = await axios.get(`${BASE_URL}/quizes.json`, {
+				cancelToken: token,
+			});
+			const quizes = [];
+			Object.keys(response.data).forEach((key, index) => {
+				quizes.push({
+					id: key,
+					name: `Test N${index + 1}`,
+				});
+			});
+			dispatch(fetchQuizesSuccess(quizes));
+		} catch (error) {
+			dispatch(fetchQuizesError(error));
+		}
+	};
+}
+
+export function fetchQuizesStart() {
+	return {
+		type: FETCH_QUIZES_START,
+	};
+}
+
+export function fetchQuizesSuccess(quizes) {
+	return {
+		type: FETCH_QUIZES_SUCCESS,
+		payload: quizes,
+	};
+}
+
+export function fetchQuizesError(error) {
+	return {
+		type: FETCH_QUIZES_ERROR,
+		payload: error,
+	};
+}
 
 export function goNextQuestionAction() {
 	return {
@@ -72,8 +119,8 @@ export function answerClickAction(answerId) {
 			dispatch(setAnswerStateAction(answerId, CLASS_ERROR, results));
 		}
 	};
-};
+}
 
 function isQuizFinished(state) {
 	return state.activeQuestion + 1 === state.quizes.length;
-};
+}
