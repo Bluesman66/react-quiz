@@ -7,7 +7,7 @@ const initialState = {
 const handlers = {
 	[CREATE_QUIZ_QUESTION]: (state, { payload }) => ({
 		...state,
-		quiz: payload,
+		quiz: [...state.quiz, payload],
 	}),
 	[RESET_QUIZ_CREATION]: (state) => ({
 		...state,
