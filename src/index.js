@@ -6,12 +6,15 @@ import React, { StrictMode } from 'react';
 
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import { QuizState } from './context';
 import ReactDOM from 'react-dom';
 
 ReactDOM.render(
 	<StrictMode>
 		<BrowserRouter>
-			<App />
+			<QuizState>
+				<App />
+			</QuizState>
 		</BrowserRouter>
 	</StrictMode>,
 	document.getElementById('root')

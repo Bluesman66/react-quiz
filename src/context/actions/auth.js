@@ -27,21 +27,21 @@ export function authAction(email, password, isLogin) {
 		localStorage.setItem('userId', data.localId);
 		localStorage.setItem('expirationDate', expirationDate);
 
-		dispatch(authSuccess(data.idToken));
-		dispatch(autoLogout(data.expiresIn));
+		dispatch(authSuccessAction(data.idToken));
+		dispatch(autoLogoutAction(data.expiresIn));
 	};
 }
 
-export function autoLogout(time) {
+export function autoLogoutAction(time) {
 	return (dispatch) => {
 		const timeout = setTimeout(() => {
-			dispatch(logout());
+			dispatch(logoutAction());
 			clearTimeout(timeout);
 		}, time * 1000);
 	};
 }
 
-export function logout() {
+export function logoutAction() {
 	localStorage.removeItem('token');
 	localStorage.removeItem('userId');
 	localStorage.removeItem('expirationDate');
@@ -50,26 +50,28 @@ export function logout() {
 	};
 }
 
-export function autoLogin() {
+export function autoLoginAction() {
 	return (dispatch) => {
 		const token = localStorage.getItem('token');
 		if (!token) {
-			dispatch(logout());
+			dispatch(logoutAction());
 		} else {
 			const expirationDate = new Date(localStorage.getItem('expirationDate'));
 			if (expirationDate <= new Date()) {
-				dispatch(logout());
+				dispatch(logoutAction());
 			} else {
-				dispatch(authSuccess(token));
+				dispatch(authSuccessAction(token));
 				dispatch(
-					autoLogout((expirationDate.getTime() - new Date().getTime()) / 1000)
+					autoLogoutAction(
+						(expirationDate.getTime() - new Date().getTime()) / 1000
+					)
 				);
 			}
 		}
 	};
 }
 
-export function authSuccess(token) {
+export function authSuccessAction(token) {
 	return {
 		type: AUTH_SUCCESS,
 		payload: token,
