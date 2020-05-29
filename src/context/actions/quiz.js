@@ -81,10 +81,9 @@ export function goNextQuestionAction() {
 	};
 }
 
-export function setIsFinishedAction(value) {
+export function setIsFinishedAction() {
 	return {
 		type: SET_IS_FINISHED,
-		payload: value,
 	};
 }
 
@@ -122,7 +121,7 @@ export function answerClickAction(answerId) {
 
 			const timeout = window.setTimeout(() => {
 				if (isQuizFinished(state)) {
-					dispatch(setIsFinishedAction(true));
+					dispatch(setIsFinishedAction());
 				} else {
 					dispatch(goNextQuestionAction());
 				}

@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Button } from '../../components';
 import { Input } from '../../components';
-import axios from 'axios';
+import { QuizContext } from '../../context';
+import { authAction } from '../../context/actions/auth';
 import is from 'is_js';
 import s from './Auth.module.scss';
 
 const Auth = () => {
+	const { dispatch } = useContext(QuizContext);
+
 	const [formValid, setFormValid] = useState(false);
 	const [formControls, setFormControls] = useState({
 		email: {
@@ -79,40 +82,16 @@ const Auth = () => {
 		setFormValid(validateForm(formControlsClone));
 	};
 
-	const login = async () => {
-		const authData = {
-			email: formControls.email.value,
-			password: formControls.password.value,
-			returnSecureToken: true,
-		};
-		try {
-			const response = await axios.post(
-				`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=
-				AIzaSyDnmmD-gjpkSWDwRLfb8IUQ_ICWK7_kFnc`,
-				authData
-			);
-			console.log(response.data);
-		} catch (error) {
-			console.log(error);
-		}
+	const login = () => {
+		dispatch(
+			authAction(formControls.email.value, formControls.password.value, true)
+		);
 	};
 
-	const register = async () => {
-		const authData = {
-			email: formControls.email.value,
-			password: formControls.password.value,
-			returnSecureToken: true,
-		};
-		try {
-			const response = await axios.post(
-				`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=
-				AIzaSyDnmmD-gjpkSWDwRLfb8IUQ_ICWK7_kFnc`,
-				authData
-			);
-			console.log(response.data);
-		} catch (error) {
-			console.log(error);
-		}
+	const register = () => {
+		dispatch(
+			authAction(formControls.email.value, formControls.password.value, false)
+		);
 	};
 
 	const submit = (event) => {

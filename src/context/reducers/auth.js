@@ -5,8 +5,14 @@ const initialState = {
 };
 
 const handlers = {
-	[AUTH_LOGOUT]: (state) => state,
-	[AUTH_SUCCESS]: (state) => state,
+	[AUTH_SUCCESS]: (state, { payload }) => ({
+		...state,
+		token: payload,
+	}),
+	[AUTH_LOGOUT]: (state) => ({
+		...state,
+		token: null,
+	}),
 	DEFAULT: (state) => state,
 };
 

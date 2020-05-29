@@ -31,9 +31,9 @@ const handlers = {
 		answerState: payload.answerState,
 		results: payload.results,
 	}),
-	[SET_IS_FINISHED]: (state, { payload }) => ({
+	[SET_IS_FINISHED]: (state) => ({
 		...state,
-		isFinished: payload,
+		isFinished: true,
 	}),
 	[RESET_STATE]: (state) => ({
 		...state,
